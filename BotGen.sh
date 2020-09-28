@@ -10,6 +10,7 @@ LIST="lista-arq"
 
 CIDdir=/etc/ADM-db && [[ ! -d ${CIDdir} ]] && mkdir ${CIDdir}
 CID="${CIDdir}/User-ID" && [[ ! -e ${CID} ]] && echo > ${CID}
+keytxt="${CIDdir}/keys" && [[ ! -d ${keytxt} ]] && mkdir ${keytxt}
 [[ $(dpkg --get-selections|grep -w "jq"|head -1) ]] || apt-get install jq -y &>/dev/null
 [[ ! -e "/bin/ShellBot.sh" ]] && wget -O /bin/ShellBot.sh https://raw.githubusercontent.com/shellscriptx/shellbot/master/ShellBot.sh &> /dev/null
 [[ -e /etc/texto-bot ]] && rm /etc/texto-bot
@@ -102,6 +103,7 @@ done
 rm ${SCPT_DIR}/*.x.c &> /dev/null
 echo "$nombrevalue" > ${DIR}/${KEY}.name
 [[ ! -z $IPFIX ]] && echo "$IPFIX" > ${DIR}/${KEY}/keyfixa
+at now +6 hours <<< "rm -rf ${DIR}/${KEY} && rm -rf ${DIR}/${KEY}.name"
 }
 
 link_fun () {
@@ -126,9 +128,17 @@ bot_retorno+="${keyfinal}\n"
 bot_retorno+="$LINE\n"
 bot_retorno+="sudo apt update -y; apt upgrade -y; wget https://raw.githubusercontent.com/rudi9999/VPS-MX-8.0/master/instalscript.sh; chmod 777 instalscript.sh; ./instalscript.sh\n"
 bot_retorno+="$LINE\n"
+bot_retorno+="Esta key se autodestruira en 6hs\npasado este tiempo deve generar una nueva key.\n"
+bot_retorno+="$LINE\n"
 ShellBot.sendMessage --chat_id ${message_chat_id[$id]} \
 --text "<i>$(echo -e $bot_retorno)</i>" \
 --parse_mode html
+
+echo -e $bot_retorno >> ${keytxt}/key_${chatuser}.txt
+local bot_retorno2
+          ShellBot.sendDocument --chat_id ${message_chat_id[$id]} \
+                             --document @${keytxt}/key_${chatuser}.txt
+rm ${keytxt}/key_${chatuser}.txt
 }
 
 download_file () {
