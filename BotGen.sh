@@ -9,7 +9,7 @@ DIR="/etc/http-shell"
 LIST="lista-arq"
 
 CIDdir=/etc/ADM-db && [[ ! -d ${CIDdir} ]] && mkdir ${CIDdir}
-CID="${CIDdir}/Control-ID" && [[ ! -e ${CID} ]] && echo > ${CID}
+CID="${CIDdir}/User-ID" && [[ ! -e ${CID} ]] && echo > ${CID}
 [[ $(dpkg --get-selections|grep -w "jq"|head -1) ]] || apt-get install jq -y &>/dev/null
 [[ ! -e "/bin/ShellBot.sh" ]] && wget -O /bin/ShellBot.sh https://raw.githubusercontent.com/shellscriptx/shellbot/master/ShellBot.sh &> /dev/null
 [[ -e /etc/texto-bot ]] && rm /etc/texto-bot
@@ -176,7 +176,7 @@ _eof
 
 	return 0
 cd $HOME/db
-mv *.dat Control-ID
+mv *.dat User-ID
 }
 
 listID_fun () {
@@ -236,8 +236,8 @@ ID-db_fun () {
 cp ${CID} $HOME/
 local bot_retorno2
           ShellBot.sendDocument --chat_id ${message_chat_id[$id]} \
-                             --document @$HOME/Control-ID
-rm $HOME/Control-ID
+                             --document @$HOME/User-ID
+rm $HOME/User-ID
 }
 
 myid_fun () {
