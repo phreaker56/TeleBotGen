@@ -35,4 +35,5 @@ bot_retorno="=========COMANDOS=========\n"
 		 bot_retorno+="/reboot (Reinicia el servidor vps)\n"
 		 bot_retorno+="$LINE\n"
 	 fi	
+msj_fun
 }

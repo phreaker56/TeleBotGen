@@ -1,0 +1,40 @@
+#!/bin/bash
+
+comand () {
+	    if [[ $(echo $permited|grep "${chatuser}") = "" ]]; then
+		 if [[ $(cat ${CID}|grep "${chatuser}") = "" ]]; then
+			 case ${comando[0]} in
+				 /[Ii]d|/[Ii]D)myid_fun &;;
+				 /[Mm]enu|[Mm]enu|/[Ss]tart|[Ss]tart|[Cc]omensar|/[Cc]omensar)menu_src &;;
+				 /[Aa]yuda|[Aa]yuda|[Hh]elp|/[Hh]elp)ayuda_src &;;
+				 *)invalido &;;
+			 esac
+		 else
+			 case ${comando[0]} in
+				 /[Mm]enu|[Mm]enu|/[Ss]tart|[Ss]tart|[Cc]omensar|/[Cc]omensar)menu_src &;;
+				 /[Aa]yuda|[Aa]yuda|[Hh]elp|/[Hh]elp)ayuda_src &;;
+				 /[Ii]d|/[Ii]D)myid_src &;;
+				 /[Kk]eygen)gerar_key &;;
+				 /[Ii]nstal)link_src &;;
+				 *)invalido &;;
+			 esac
+		 fi
+	    else
+		 case ${comando[0]} in
+			 /[Mm]enu|[Mm]enu|/[Ss]tart|[Ss]tart|[Cc]omensar|/[Cc]omensar)menu_src &;;
+			 /[Aa]yuda|[Aa]yuda|[Hh]elp|/[Hh]elp)ayuda_src &;;
+			 /[Ii]d|/[Ii]D)myid_src &;;
+			 /[Kk]eygen)gerar_key &;;
+			 /[Pp]ower)start_gen &;;
+			 /[Ii]nfosys)infosys_src &;;
+			 /[Ll]ist)listID_src &;;
+			 /[Aa]dd)addID_src "${comando[1]}" &;;
+			 /[Dd]el|/[Dd]elid)deleteID_src "${comando[1]}" &;;
+			 /[Rr]eboot)reboot_src &;;
+			 /[Ii]nstal)link_src &;;
+			 /[Cc]ache)cache_src &;;
+			 *)download_file &;;
+			 /*)invalido_fun &;;
+		 esac
+	    fi
+}

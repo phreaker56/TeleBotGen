@@ -1,0 +1,41 @@
+#!/bin/bash
+
+myid_src () {
+bot_retorno="====================\n"
+          bot_retorno+="SU ID: ${chatuser}\n"
+          bot_retorno+="====================\n"
+msj_fun
+}
+
+deleteID_src () {
+delid=$(sed -n ${1}p ${CID})
+sed -i "${1}d" ${CID}
+bot_retorno="$LINE\n"
+          bot_retorno+="ID eliminado con exito!\n"
+          bot_retorno+="ID: ${delid}\n"
+          bot_retorno+="$LINE\n"
+msj_fun
+upfile_src
+}
+
+addID_src () {
+[[ $(cat ${CID}|grep "${1}") = "" ]] && {
+echo "/${1}" >> ${CID}
+bot_retorno="$LINE\n"
+          bot_retorno+="ID agregado con exito\n"
+          bot_retorno+="$LINE\n"
+bot_retor="$LINE\n"
+          bot_retor+="El Administrador te autoriso\n"
+	  bot_retor+="para usar el comando /keygen\n"
+	  bot_retor+="$LINE\n"
+msj_fun
+msj_add ${1}
+upfile_src
+  } || {
+bot_retorno="$LINE\n"
+          bot_retorno+="====ERROR====\n"
+          bot_retorno+="Este ID ya existe\n"
+          bot_retorno+="$LINE\n"
+msj_fun
+  }
+}
