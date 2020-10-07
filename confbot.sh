@@ -22,7 +22,7 @@ function_verify () {
   exit 1
   } || {
   ### INTALAR VERCION DE SCRIPT
-  v1=$(curl -sSL "https://raw.githubusercontent.com/rudi9999/Generador_Gen_VPS-MX/master/Vercion")
+  v1=$(curl -sSL "https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/sources/Vercion")
   echo "$v1" > /etc/ADM-db/vercion
   }
 }
@@ -39,6 +39,7 @@ chmod +x ${ARQ}/$1
 }
 
 download () {
+clear
 echo -e "$BARRA"
 echo -e "\033[1;33mDescargando archivos... "
 echo -e "$BARRA"
@@ -80,7 +81,7 @@ echo -n "ID: "
 read opcion
 echo "$opcion" > ${CIDdir}/Admin-ID
 msg -bar
-echo -e "  \033[1;32mID guardo con exito!" && msg -bar && echo -e "  \033[1;37mdesde su apps (telegram). ingresar al bot!\n  digite el comando \033[1;31m/menu\n  \033[1;37mprueve si tiene acceso al menu extendido."
+echo -e "  \033[1;32mID guardo con exito!" && msg -bar && echo -e "  \033[1;37mdesde su apps (telegram). ingresar al bot!\n  digite el comando \033[1;31m/menu\n  \033[1;37mprueve si tiene acceso al menu extendido." && msg -bar
 read foo
 bot_gen
 }
@@ -119,21 +120,22 @@ read foo
 bot_gen
 }
 
-bot_gen () {
-
+bot_conf () {
 check_ip
 function_verify
 instaled=/etc/ADM-db/sources && [[ ! -d ${instaled} ]] && download
+bot_gen
+}
 
+bot_gen () {
 clear
-
 unset PID_GEN
 PID_GEN=$(ps x|grep -v grep|grep "BotGen.sh")
 [[ ! $PID_GEN ]] && PID_GEN="\033[1;31moffline" || PID_GEN="\033[1;32monline"
 
 CIDdir=/etc/ADM-db && [[ ! -d ${CIDdir} ]] && mkdir ${CIDdir}
 msg -bar
-echo -e "     \033[1;41m \033[1;37m>>>>>>  BotGen by \033[1;36mRufu99\033[1;37m  v1.0 <<<<<< \033[0m"
+echo -e "     \033[1;41m \033[1;37m>>>>>>  BotGen by \033[1;36mRufu99\033[1;32m  $(cat ${CIDdir}/vercion) \033[1;37m<<<<<< \033[0m"
 msg -bar
 echo -e "\033[1;32m[1] \033[1;31m> \033[1;37mTOKEN DEL BOT"
 echo -e "\033[1;32m[2] \033[1;31m> \033[1;37mINICIAR/PARAR BOT $PID_GEN\033[0m"
