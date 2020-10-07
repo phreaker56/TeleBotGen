@@ -1,28 +1,13 @@
 #!/bin/bash
-
+  
 CIDdir=/etc/ADM-db && [[ ! -d ${CIDdir} ]] && mkdir ${CIDdir}
+SRC="${CIDdir}/sources" && [[ ! -d ${SRC} ]] && mkdir ${SRC}
 CID="${CIDdir}/User-ID" && [[ ! -e ${CID} ]] && echo > ${CID}
 keytxt="${CIDdir}/keys" && [[ ! -d ${keytxt} ]] && mkdir ${keytxt}
 [[ $(dpkg --get-selections|grep -w "jq"|head -1) ]] || apt-get install jq -y &>/dev/null
 [[ ! -e "/bin/ShellBot.sh" ]] && wget -O /bin/ShellBot.sh https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/ShellBot.sh &> /dev/null
 [[ -e /etc/texto-bot ]] && rm /etc/texto-bot
 LINE="==========================="
-
-SRC="${CIDdir}/sources" && [[ ! -d ${SRC} ]] && mkdir ${SRC}
-[[ ! -e "${SRC}/menu" ]] && wget -O ${SRC}/menu https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/menu &> /dev/null
-[[ ! -e "${SRC}/ayuda" ]] && wget -O ${SRC}/ayuda https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/ayuda &> /dev/null
-[[ ! -e "${SRC}/cache" ]] && wget -O ${SRC}/cache https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/cache &> /dev/null
-[[ ! -e "${SRC}/invalido" ]] && wget -O ${SRC}/invalido https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/invalido &> /dev/null
-[[ ! -e "${SRC}/status" ]] && wget -O ${SRC}/status https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/status &> /dev/null
-[[ ! -e "${SRC}/reinicio" ]] && wget -O ${SRC}/reinicio https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/reinicio &> /dev/null
-[[ ! -e "${SRC}/myip" ]] && wget -O ${SRC}/myip https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/myip &> /dev/null
-[[ ! -e "${SRC}/id" ]] && wget -O ${SRC}/id https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/id &> /dev/null
-[[ ! -e "${SRC}/back_ID" ]] && wget -O ${SRC}/back_ID https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/back_ID &> /dev/null
-[[ ! -e "${SRC}/link" ]] && wget -O ${SRC}/link https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/link &> /dev/null
-[[ ! -e "${SRC}/listID" ]] && wget -O ${SRC}/listID https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/listID &> /dev/null
-[[ ! -e "${SRC}/gerar_key" ]] && wget -O ${SRC}/gerar_key https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/gerar_key &> /dev/null
-[[ ! -e "${SRC}/power" ]] && wget -O ${SRC}/power https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/power &> /dev/null
-[[ ! -e "${SRC}/comandos" ]] && wget -O ${SRC}/comandos https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/comandos &> /dev/null
 
 # Importando API
 source ShellBot.sh
@@ -95,6 +80,17 @@ msj_fun () {
 							--parse_mode html
 	return 0
 }
+
+function_verify () {
+unset permited
+permited=$(curl -sSL "https://raw.githubusercontent.com/rudi9999/Control/master/Control-Bot")
+if [[ $(echo $permited | grep "${IP}") = "" ]]; then
+exit 0
+fi
+}
+
+meu_ip
+function_verify
 
 # Ejecutando escucha del bot
 while true; do
