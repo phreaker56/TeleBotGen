@@ -1,5 +1,66 @@
 #!/bin/bash
 
+SCPresq="aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3J1ZGk5OTk5L1RlbGVCb3RHZW4vbWFzdGVyL3NvdXJjZXM="
+SUB_DOM='base64 -d'
+
+meu_ip () {
+MIP=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -o -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
+MIP2=$(wget -qO- ipv4.icanhazip.com)
+[[ "$MIP" != "$MIP2" ]] && IP="$MIP2" || IP="$MIP"
+echo "$IP" > /usr/bin/vendor_code
+}
+
+function_verify () {
+  permited=$(curl -sSL "https://raw.githubusercontent.com/rudi9999/Control/master/Control-Bot")
+  [[ $(echo $permited|grep "${IP}") = "" ]] && {
+  echo -e "\n\n\n\033[1;31m====================================================="
+  echo -e "\033[1;31m       ¡LA IP $(wget -qO- ipv4.icanhazip.com) NO ESTA AUTORIZADA!"
+  echo -e "\033[1;31m                CONTACTE A @Rufu99"
+  echo -e "\033[1;31m=====================================================\n\n\n"
+  [[ -d /etc/ADM-db ]] && rm -rf /etc/ADM-db
+[[ ! -e "/bin/ShellBot.sh" ]] && rm /bin/ShellBot.sh
+  exit 1
+  } || {
+  ### INTALAR VERCION DE SCRIPT
+  v1=$(curl -sSL "https://raw.githubusercontent.com/rudi9999/Generador_Gen_VPS-MX/master/Vercion")
+  echo "$v1" > /etc/ADM-db/vercion
+  }
+}
+
+meu_ip
+function_verify
+
+veryfy_fun () {
+SRC="/etc/ADM-db/sources" && [[ ! -d ${SRC} ]] && mkdir ${SRC}
+unset ARQ
+case $1 in
+"BotGen.sh")ARQ="/etc/ADM-db/";;
+*)ARQ="/etc/ADM-db/sources/";;
+esac
+mv -f $HOME/$1 ${ARQ}/$1
+chmod +x ${ARQ}/$1
+}
+
+download () {
+echo -e "$BARRA"
+echo -e "\033[1;33mDescargando archivos... "
+echo -e "$BARRA"
+cd $HOME
+REQUEST=$(echo $SCPresq|$SUB_DOM)
+wget -O "$HOME/lista-arq" ${REQUEST}/lista-bot > /dev/null 2>&1
+sleep 1s
+[[ -e $HOME/lista-arq ]] && {
+for arqx in `cat $HOME/lista-arq`; do
+echo -ne "\033[1;33mDescargando: \033[1;31m[$arqx] "
+wget -O $HOME/$arqx ${REQUEST}/${arqx} > /dev/null 2>&1 && {
+echo -e "\033[1;31m- \033[1;32mRecibido!"
+[[ -e $HOME/$arqx ]] && veryfy_fun $arqx
+} || echo -e "\033[1;31m- \033[1;31mFalla (no recibido!)"
+done
+}
+
+instaled=/etc/ADM-db/sources && [[ ! -d ${instaled} ]] && download
+
 ini_token () {
 clear
 msg -bar
@@ -30,7 +91,6 @@ bot_gen
 
 start_bot () {
 [[ ! -e "${CIDdir}/token" ]] && echo "null" > ${CIDdir}/token
-[[ ! -e "${CIDdir}/BotGen.sh" ]] && wget -O ${CIDdir}/BotGen.sh https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/BotGen.sh &> /dev/null && chmod +x ${CIDdir}/BotGen.sh
 unset PIDGEN
 PIDGEN=$(ps aux|grep -v grep|grep "BotGen.sh")
 if [[ ! $PIDGEN ]]; then
