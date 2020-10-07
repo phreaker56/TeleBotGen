@@ -3,7 +3,7 @@
 SCPresq="aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3J1ZGk5OTk5L1RlbGVCb3RHZW4vbWFzdGVyL3NvdXJjZXM="
 SUB_DOM='base64 -d'
 
-meu_ip () {
+check_ip () {
 MIP=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -o -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
 MIP2=$(wget -qO- ipv4.icanhazip.com)
 [[ "$MIP" != "$MIP2" ]] && IP="$MIP2" || IP="$MIP"
@@ -26,9 +26,6 @@ function_verify () {
   echo "$v1" > /etc/ADM-db/vercion
   }
 }
-
-meu_ip
-function_verify
 
 veryfy_fun () {
 SRC="/etc/ADM-db/sources" && [[ ! -d ${SRC} ]] && mkdir ${SRC}
@@ -57,9 +54,8 @@ echo -e "\033[1;31m- \033[1;32mRecibido!"
 [[ -e $HOME/$arqx ]] && veryfy_fun $arqx
 } || echo -e "\033[1;31m- \033[1;31mFalla (no recibido!)"
 done
+ }
 }
-
-instaled=/etc/ADM-db/sources && [[ ! -d ${instaled} ]] && download
 
 ini_token () {
 clear
@@ -124,6 +120,11 @@ bot_gen
 }
 
 bot_gen () {
+
+check_ip
+function_verify
+instaled=/etc/ADM-db/sources && [[ ! -d ${instaled} ]] && download
+
 clear
 
 unset PID_GEN
@@ -143,11 +144,11 @@ msg -bar
 echo -n "Opcion: "
 read opcion
 case $opcion in
-0);;
+0) ;;
 1) ini_token;;
 2) start_bot;;
 3) ini_id;;
-4)ayuda_fun;;
-*)bot_gen;;
+4) ayuda_fun;;
+*) bot_gen;;
 esac
 }
