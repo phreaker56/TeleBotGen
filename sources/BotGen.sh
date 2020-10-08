@@ -81,17 +81,6 @@ msj_fun () {
 	return 0
 }
 
-function_verify () {
-unset permited
-permited=$(curl -sSL "https://raw.githubusercontent.com/rudi9999/Control/master/Control-Bot")
-if [[ $(echo $permited | grep "${IP}") = "" ]]; then
-exit 0
-fi
-}
-
-meu_ip
-function_verify
-
 # Ejecutando escucha del bot
 while true; do
     ShellBot.getUpdates --limit 100 --offset $(ShellBot.OffsetNext) --timeout 30
