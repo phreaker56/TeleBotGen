@@ -57,6 +57,7 @@ echo -e "\033[1;31m- \033[1;32mRecibido!"
 } || echo -e "\033[1;31m- \033[1;31mFalla (no recibido!)"
 done
  }
+ rm $HOME/lista-arq
 }
 
 ini_token () {
