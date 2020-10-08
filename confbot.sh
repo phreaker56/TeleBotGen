@@ -1,159 +1,107 @@
 #!/bin/bash
-
-SCPresq="aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3J1ZGk5OTk5L1RlbGVCb3RHZW4vbWFzdGVyL3NvdXJjZXM="
-SUB_DOM='base64 -d'
-bar="\e[0;36m=====================================================\e[0m"
-
-check_ip () {
-MIP=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -o -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
-MIP2=$(wget -qO- ipv4.icanhazip.com)
-[[ "$MIP" != "$MIP2" ]] && IP="$MIP2" || IP="$MIP"
-echo "$IP" > /usr/bin/vendor_code
-}
-
-function_verify () {
-  permited=$(curl -sSL "https://raw.githubusercontent.com/rudi9999/Control/master/Control-Bot")
-  [[ $(echo $permited|grep "${IP}") = "" ]] && {
-  clear
-  echo -e "\n\n\n\e[31m====================================================="
-  echo -e "\e[31m      ¡LA IP $(wget -qO- ipv4.icanhazip.com) NO ESTA AUTORIZADA!\n     SI DESEAS USAR EL BOTGEN CONTACTE A @Rufu99"
-  echo -e "\e[31m=====================================================\n\n\n\e[0m"
-  [[ -d /etc/ADM-db ]] && rm -rf /etc/ADM-db
-[[ ! -e "/bin/ShellBot.sh" ]] && rm /bin/ShellBot.sh
-  exit 1
-  } || {
-  ### INTALAR VERCION DE SCRIPT
-  v1=$(curl -sSL "https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/Vercion")
-  echo "$v1" > /etc/ADM-db/vercion
-  }
-}
-
-veryfy_fun () {
-SRC="/etc/ADM-db/sources" && [[ ! -d ${SRC} ]] && mkdir ${SRC}
-unset ARQ
-case $1 in
-"BotGen.sh")ARQ="/etc/ADM-db/";;
-*)ARQ="/etc/ADM-db/sources/";;
-esac
-mv -f $HOME/$1 ${ARQ}/$1
-chmod +x ${ARQ}/$1
-}
-
-download () {
-clear
-echo -e "$bar"
-echo -e "\033[1;33mDescargando archivos... "
-echo -e "$bar"
-cd $HOME
-REQUEST=$(echo $SCPresq|$SUB_DOM)
-wget -O "$HOME/lista-arq" ${REQUEST}/lista-bot > /dev/null 2>&1
-sleep 1s
-[[ -e $HOME/lista-arq ]] && {
-for arqx in `cat $HOME/lista-arq`; do
-echo -ne "\033[1;33mDescargando: \033[1;31m[$arqx] "
-wget -O $HOME/$arqx ${REQUEST}/${arqx} > /dev/null 2>&1 && {
-echo -e "\033[1;31m- \033[1;32mRecibido!"
-[[ -e $HOME/$arqx ]] && veryfy_fun $arqx
-} || echo -e "\033[1;31m- \033[1;31mFalla (no recibido!)"
-done
- }
-}
-
-ini_token () {
-clear
-echo -e "$bar"
-echo -e "  \033[1;37mIngrese el token de su bot"
-echo -e "$bar"
-echo -n "TOKEN: "
-read opcion
-echo "$opcion" > ${CIDdir}/token
-echo -e "$bar"
-echo -e "  \033[1;32mtoken se guardo con exito!" && echo -e "$bar" && echo -e "  \033[1;37mPara tener acceso a todos los comandos del bot\n  deve iniciar el bot en la opcion 2.\n  desde su apps (telegram). ingresar al bot!\n  digite el comando \033[1;31m/id\n  \033[1;37mel bot le respodera con su ID de telegram.\n  copiar el ID e ingresar el mismo en la opcion 3" && echo -e "$bar"
-read foo
-bot_gen
-}
-
-ini_id () {
-clear
-echo -e "$bar"
-echo -e "  \033[1;37mIngrese su ID de telegram"
-echo -e "$bar"
-echo -n "ID: "
-read opcion
-echo "$opcion" > ${CIDdir}/Admin-ID
-echo -e "$bar"
-echo -e "  \033[1;32mID guardo con exito!" && echo -e "$bar" && echo -e "  \033[1;37mdesde su apps (telegram). ingresar al bot!\n  digite el comando \033[1;31m/menu\n  \033[1;37mprueve si tiene acceso al menu extendido." && echo -e "$bar"
-read foo
-bot_gen
-}
-
-start_bot () {
-[[ ! -e "${CIDdir}/token" ]] && echo "null" > ${CIDdir}/token
-unset PIDGEN
-PIDGEN=$(ps aux|grep -v grep|grep "BotGen.sh")
-if [[ ! $PIDGEN ]]; then
-screen -dmS teleBotGen ${CIDdir}/BotGen.sh
-else
-killall BotGen.sh
-fi
-bot_gen
-}
-
-ayuda_fun () {
-clear
-echo -e "$bar"
-echo -e "            \e[47m\e[30m Instrucciones rapidas \e[0m"
-echo -e "$bar"
-echo -e "\033[1;37m   Es necesario crear un bot en \033[1;32m@BotFather "
-echo -e "$bar"
-echo -e "\033[1;32m1- \033[1;37mEn su apps telegram ingrese a @BotFather"
-echo -e "\033[1;32m2- \033[1;37mDigite el comando \033[1;31m/newbot"
-echo -e "\033[1;32m3- @BotFather \033[1;37msolicitara que\n   asigne un nombre a su bot"
-echo -e "\033[1;32m4- @BotFather \033[1;37msolicitara que asigne otro nombre,\n   esta vez deve finalizar en bot eje: \033[1;31mXXX_bot"
-echo -e "\033[1;32m5- \033[1;37mObtener token del bot creado.\n   En \033[1;32m@BotFather \033[1;37mdigite el comando \033[1;31m/token\n   \033[1;37mseleccione el bot y copie el token."
-echo -e "\033[1;32m6- \033[1;37mIngrese el token\n   en la opcion \033[1;32m[1] \033[1;31m> \033[1;37mTOKEN DEL BOT"
-echo -e "\033[1;32m7- \033[1;37mPoner en linea el bot\n   en la opcion \033[1;32m[2] \033[1;31m> \033[1;37mINICIAR/PARAR BOT"
-echo -e "\033[1;32m8- \033[1;37mEn su apps telegram, inicie el bot creado\n   digite el comando \033[1;31m/id \033[1;37mel bot le respondera\n   con su ID de telegran (copie el ID)"
-echo -e "\033[1;32m9- \033[1;37mIngrese el ID en la\n   opcion \033[1;32m[3] \033[1;31m> \033[1;37mID DE USUARIO TELEGRAM"
-echo -e "\033[1;32m10-\033[1;37mcomprueve que tiene acceso a\n   las opciones avanzadas de su bot."
-echo -e "$bar"
-read foo
-bot_gen
-}
-
-bot_conf () {
-check_ip
-function_verify
-instaled=/etc/ADM-db/sources && [[ ! -d ${instaled} ]] && download
-bot_gen
-}
-
-bot_gen () {
-[[ ! -e $HOME/lista-arq ]] && rm $HOME/lista-arq
-clear
-unset PID_GEN
-PID_GEN=$(ps x|grep -v grep|grep "BotGen.sh")
-[[ ! $PID_GEN ]] && PID_GEN="\033[1;31moffline" || PID_GEN="\033[1;32monline"
-
-CIDdir=/etc/ADM-db && [[ ! -d ${CIDdir} ]] && mkdir ${CIDdir}
-echo -e "$bar"
-echo -e "     \e[47m \e[30m>>>>>>  BotGen by \e[1;36mRufu99\e[1;32m  $(cat ${CIDdir}/vercion)\e[0m\e[47m \e[30m<<<<<< \e[0m"
-echo -e "$bar"
-echo -e "\033[1;32m[1] \033[1;36m> \033[1;37mTOKEN DEL BOT"
-echo -e "\033[1;32m[2] \033[1;36m> \033[1;37mINICIAR/PARAR BOT $PID_GEN\033[0m"
-echo -e "\033[1;32m[3] \033[1;36m> \033[1;37mID DE USUARIO TELEGRAM"
-echo -e "\033[1;32m[4] \033[1;36m> \033[1;37mMANUAL"
-echo -e "$bar"
-echo -e "\e[1;32m[0] \e[36m>\e[0m \e[47m\e[30m <<ATRAS "
-echo -e "$bar"
-echo -n "Opcion: "
-read opcion
-case $opcion in
-0) ;;
-1) ini_token;;
-2) start_bot;;
-3) ini_id;;
-4) ayuda_fun;;
-*) bot_gen;;
-esac
-}
+CesarHackGray=$(mktemp)
+base64 -d  >${CesarHackGray}<<DIXIE
+IyEvYmluL2Jhc2gKClNDUHJlc3E9ImFIUjBjSE02THk5eVlYY3VaMmwwYUhWaWRYTmxjbU52Ym5S
+bGJuUXVZMjl0TDNKMVpHazVPVGs1TDFSbGJHVkNiM1JIWlc0dmJXRnpkR1Z5TDNOdmRYSmpaWE09
+IgpTVUJfRE9NPSdiYXNlNjQgLWQnCmJhcj0iXGVbMDszNm09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxlWzBtIgoKY2hlY2tfaXAgKCkgewpNSVA9
+JChpcCBhZGRyIHwgZ3JlcCAnaW5ldCcgfCBncmVwIC12IGluZXQ2IHwgZ3JlcCAtdkUgJzEyN1wu
+WzAtOV17MSwzfVwuWzAtOV17MSwzfVwuWzAtOV17MSwzfScgfCBncmVwIC1vIC1FICdbMC05XXsx
+LDN9XC5bMC05XXsxLDN9XC5bMC05XXsxLDN9XC5bMC05XXsxLDN9JyB8IGhlYWQgLTEpCk1JUDI9
+JCh3Z2V0IC1xTy0gaXB2NC5pY2FuaGF6aXAuY29tKQpbWyAiJE1JUCIgIT0gIiRNSVAyIiBdXSAm
+JiBJUD0iJE1JUDIiIHx8IElQPSIkTUlQIgplY2hvICIkSVAiID4gL3Vzci9iaW4vdmVuZG9yX2Nv
+ZGUKfQoKZnVuY3Rpb25fdmVyaWZ5ICgpIHsKICBwZXJtaXRlZD0kKGN1cmwgLXNTTCAiaHR0cHM6
+Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3J1ZGk5OTk5L0NvbnRyb2wvbWFzdGVyL0NvbnRy
+b2wtQm90IikKICBbWyAkKGVjaG8gJHBlcm1pdGVkfGdyZXAgIiR7SVB9IikgPSAiIiBdXSAmJiB7
+CiAgY2xlYXIKICBlY2hvIC1lICJcblxuXG5cZVszMW09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PSIKICBlY2hvIC1lICJcZVszMW0gICAgICDCoUxB
+IElQICQod2dldCAtcU8tIGlwdjQuaWNhbmhhemlwLmNvbSkgTk8gRVNUQSBBVVRPUklaQURBIVxu
+ICAgICBTSSBERVNFQVMgVVNBUiBFTCBCT1RHRU4gQ09OVEFDVEUgQSBAUnVmdTk5IgogIGVjaG8g
+LWUgIlxlWzMxbT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09XG5cblxuXGVbMG0iCiAgW1sgLWQgL2V0Yy9BRE0tZGIgXV0gJiYgcm0gLXJmIC9ldGMv
+QURNLWRiCltbICEgLWUgIi9iaW4vU2hlbGxCb3Quc2giIF1dICYmIHJtIC9iaW4vU2hlbGxCb3Qu
+c2gKICBleGl0IDEKICB9IHx8IHsKICAjIyMgSU5UQUxBUiBWRVJDSU9OIERFIFNDUklQVAogIHYx
+PSQoY3VybCAtc1NMICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vcnVkaTk5OTkv
+VGVsZUJvdEdlbi9tYXN0ZXIvVmVyY2lvbiIpCiAgZWNobyAiJHYxIiA+IC9ldGMvQURNLWRiL3Zl
+cmNpb24KICB9Cn0KCnZlcnlmeV9mdW4gKCkgewpTUkM9Ii9ldGMvQURNLWRiL3NvdXJjZXMiICYm
+IFtbICEgLWQgJHtTUkN9IF1dICYmIG1rZGlyICR7U1JDfQp1bnNldCBBUlEKY2FzZSAkMSBpbgoi
+Qm90R2VuLnNoIilBUlE9Ii9ldGMvQURNLWRiLyI7OwoqKUFSUT0iL2V0Yy9BRE0tZGIvc291cmNl
+cy8iOzsKZXNhYwptdiAtZiAkSE9NRS8kMSAke0FSUX0vJDEKY2htb2QgK3ggJHtBUlF9LyQxCn0K
+CmRvd25sb2FkICgpIHsKY2xlYXIKZWNobyAtZSAiJGJhciIKZWNobyAtZSAiXDAzM1sxOzMzbURl
+c2NhcmdhbmRvIGFyY2hpdm9zLi4uICIKZWNobyAtZSAiJGJhciIKY2QgJEhPTUUKUkVRVUVTVD0k
+KGVjaG8gJFNDUHJlc3F8JFNVQl9ET00pCndnZXQgLU8gIiRIT01FL2xpc3RhLWFycSIgJHtSRVFV
+RVNUfS9saXN0YS1ib3QgPiAvZGV2L251bGwgMj4mMQpzbGVlcCAxcwpbWyAtZSAkSE9NRS9saXN0
+YS1hcnEgXV0gJiYgewpmb3IgYXJxeCBpbiBgY2F0ICRIT01FL2xpc3RhLWFycWA7IGRvCmVjaG8g
+LW5lICJcMDMzWzE7MzNtRGVzY2FyZ2FuZG86IFwwMzNbMTszMW1bJGFycXhdICIKd2dldCAtTyAk
+SE9NRS8kYXJxeCAke1JFUVVFU1R9LyR7YXJxeH0gPiAvZGV2L251bGwgMj4mMSAmJiB7CmVjaG8g
+LWUgIlwwMzNbMTszMW0tIFwwMzNbMTszMm1SZWNpYmlkbyEiCltbIC1lICRIT01FLyRhcnF4IF1d
+ICYmIHZlcnlmeV9mdW4gJGFycXgKfSB8fCBlY2hvIC1lICJcMDMzWzE7MzFtLSBcMDMzWzE7MzFt
+RmFsbGEgKG5vIHJlY2liaWRvISkiCmRvbmUKIH0KIHJtICRIT01FL2xpc3RhLWFycQp9Cgppbmlf
+dG9rZW4gKCkgewpjbGVhcgplY2hvIC1lICIkYmFyIgplY2hvIC1lICIgIFwwMzNbMTszN21Jbmdy
+ZXNlIGVsIHRva2VuIGRlIHN1IGJvdCIKZWNobyAtZSAiJGJhciIKZWNobyAtbiAiVE9LRU46ICIK
+cmVhZCBvcGNpb24KZWNobyAiJG9wY2lvbiIgPiAke0NJRGRpcn0vdG9rZW4KZWNobyAtZSAiJGJh
+ciIKZWNobyAtZSAiICBcMDMzWzE7MzJtdG9rZW4gc2UgZ3VhcmRvIGNvbiBleGl0byEiICYmIGVj
+aG8gLWUgIiRiYXIiICYmIGVjaG8gLWUgIiAgXDAzM1sxOzM3bVBhcmEgdGVuZXIgYWNjZXNvIGEg
+dG9kb3MgbG9zIGNvbWFuZG9zIGRlbCBib3RcbiAgZGV2ZSBpbmljaWFyIGVsIGJvdCBlbiBsYSBv
+cGNpb24gMi5cbiAgZGVzZGUgc3UgYXBwcyAodGVsZWdyYW0pLiBpbmdyZXNhciBhbCBib3QhXG4g
+IGRpZ2l0ZSBlbCBjb21hbmRvIFwwMzNbMTszMW0vaWRcbiAgXDAzM1sxOzM3bWVsIGJvdCBsZSBy
+ZXNwb2RlcmEgY29uIHN1IElEIGRlIHRlbGVncmFtLlxuICBjb3BpYXIgZWwgSUQgZSBpbmdyZXNh
+ciBlbCBtaXNtbyBlbiBsYSBvcGNpb24gMyIgJiYgZWNobyAtZSAiJGJhciIKcmVhZCBmb28KYm90
+X2dlbgp9CgppbmlfaWQgKCkgewpjbGVhcgplY2hvIC1lICIkYmFyIgplY2hvIC1lICIgIFwwMzNb
+MTszN21JbmdyZXNlIHN1IElEIGRlIHRlbGVncmFtIgplY2hvIC1lICIkYmFyIgplY2hvIC1uICJJ
+RDogIgpyZWFkIG9wY2lvbgplY2hvICIkb3BjaW9uIiA+ICR7Q0lEZGlyfS9BZG1pbi1JRAplY2hv
+IC1lICIkYmFyIgplY2hvIC1lICIgIFwwMzNbMTszMm1JRCBndWFyZG8gY29uIGV4aXRvISIgJiYg
+ZWNobyAtZSAiJGJhciIgJiYgZWNobyAtZSAiICBcMDMzWzE7MzdtZGVzZGUgc3UgYXBwcyAodGVs
+ZWdyYW0pLiBpbmdyZXNhciBhbCBib3QhXG4gIGRpZ2l0ZSBlbCBjb21hbmRvIFwwMzNbMTszMW0v
+bWVudVxuICBcMDMzWzE7MzdtcHJ1ZXZlIHNpIHRpZW5lIGFjY2VzbyBhbCBtZW51IGV4dGVuZGlk
+by4iICYmIGVjaG8gLWUgIiRiYXIiCnJlYWQgZm9vCmJvdF9nZW4KfQoKc3RhcnRfYm90ICgpIHsK
+W1sgISAtZSAiJHtDSURkaXJ9L3Rva2VuIiBdXSAmJiBlY2hvICJudWxsIiA+ICR7Q0lEZGlyfS90
+b2tlbgp1bnNldCBQSURHRU4KUElER0VOPSQocHMgYXV4fGdyZXAgLXYgZ3JlcHxncmVwICJCb3RH
+ZW4uc2giKQppZiBbWyAhICRQSURHRU4gXV07IHRoZW4Kc2NyZWVuIC1kbVMgdGVsZUJvdEdlbiAk
+e0NJRGRpcn0vQm90R2VuLnNoCmVsc2UKa2lsbGFsbCBCb3RHZW4uc2gKZmkKYm90X2dlbgp9Cgph
+eXVkYV9mdW4gKCkgewpjbGVhcgplY2hvIC1lICIkYmFyIgplY2hvIC1lICIgICAgICAgICAgICBc
+ZVs0N21cZVszMG0gSW5zdHJ1Y2Npb25lcyByYXBpZGFzIFxlWzBtIgplY2hvIC1lICIkYmFyIgpl
+Y2hvIC1lICJcMDMzWzE7MzdtICAgRXMgbmVjZXNhcmlvIGNyZWFyIHVuIGJvdCBlbiBcMDMzWzE7
+MzJtQEJvdEZhdGhlciAiCmVjaG8gLWUgIiRiYXIiCmVjaG8gLWUgIlwwMzNbMTszMm0xLSBcMDMz
+WzE7MzdtRW4gc3UgYXBwcyB0ZWxlZ3JhbSBpbmdyZXNlIGEgQEJvdEZhdGhlciIKZWNobyAtZSAi
+XDAzM1sxOzMybTItIFwwMzNbMTszN21EaWdpdGUgZWwgY29tYW5kbyBcMDMzWzE7MzFtL25ld2Jv
+dCIKZWNobyAtZSAiXDAzM1sxOzMybTMtIEBCb3RGYXRoZXIgXDAzM1sxOzM3bXNvbGljaXRhcmEg
+cXVlXG4gICBhc2lnbmUgdW4gbm9tYnJlIGEgc3UgYm90IgplY2hvIC1lICJcMDMzWzE7MzJtNC0g
+QEJvdEZhdGhlciBcMDMzWzE7Mzdtc29saWNpdGFyYSBxdWUgYXNpZ25lIG90cm8gbm9tYnJlLFxu
+ICAgZXN0YSB2ZXogZGV2ZSBmaW5hbGl6YXIgZW4gYm90IGVqZTogXDAzM1sxOzMxbVhYWF9ib3Qi
+CmVjaG8gLWUgIlwwMzNbMTszMm01LSBcMDMzWzE7MzdtT2J0ZW5lciB0b2tlbiBkZWwgYm90IGNy
+ZWFkby5cbiAgIEVuIFwwMzNbMTszMm1AQm90RmF0aGVyIFwwMzNbMTszN21kaWdpdGUgZWwgY29t
+YW5kbyBcMDMzWzE7MzFtL3Rva2VuXG4gICBcMDMzWzE7Mzdtc2VsZWNjaW9uZSBlbCBib3QgeSBj
+b3BpZSBlbCB0b2tlbi4iCmVjaG8gLWUgIlwwMzNbMTszMm02LSBcMDMzWzE7MzdtSW5ncmVzZSBl
+bCB0b2tlblxuICAgZW4gbGEgb3BjaW9uIFwwMzNbMTszMm1bMV0gXDAzM1sxOzMxbT4gXDAzM1sx
+OzM3bVRPS0VOIERFTCBCT1QiCmVjaG8gLWUgIlwwMzNbMTszMm03LSBcMDMzWzE7MzdtUG9uZXIg
+ZW4gbGluZWEgZWwgYm90XG4gICBlbiBsYSBvcGNpb24gXDAzM1sxOzMybVsyXSBcMDMzWzE7MzFt
+PiBcMDMzWzE7MzdtSU5JQ0lBUi9QQVJBUiBCT1QiCmVjaG8gLWUgIlwwMzNbMTszMm04LSBcMDMz
+WzE7MzdtRW4gc3UgYXBwcyB0ZWxlZ3JhbSwgaW5pY2llIGVsIGJvdCBjcmVhZG9cbiAgIGRpZ2l0
+ZSBlbCBjb21hbmRvIFwwMzNbMTszMW0vaWQgXDAzM1sxOzM3bWVsIGJvdCBsZSByZXNwb25kZXJh
+XG4gICBjb24gc3UgSUQgZGUgdGVsZWdyYW4gKGNvcGllIGVsIElEKSIKZWNobyAtZSAiXDAzM1sx
+OzMybTktIFwwMzNbMTszN21JbmdyZXNlIGVsIElEIGVuIGxhXG4gICBvcGNpb24gXDAzM1sxOzMy
+bVszXSBcMDMzWzE7MzFtPiBcMDMzWzE7MzdtSUQgREUgVVNVQVJJTyBURUxFR1JBTSIKZWNobyAt
+ZSAiXDAzM1sxOzMybTEwLVwwMzNbMTszN21jb21wcnVldmUgcXVlIHRpZW5lIGFjY2VzbyBhXG4g
+ICBsYXMgb3BjaW9uZXMgYXZhbnphZGFzIGRlIHN1IGJvdC4iCmVjaG8gLWUgIiRiYXIiCnJlYWQg
+Zm9vCmJvdF9nZW4KfQoKYm90X2NvbmYgKCkgewpjaGVja19pcApmdW5jdGlvbl92ZXJpZnkKaW5z
+dGFsZWQ9L2V0Yy9BRE0tZGIvc291cmNlcyAmJiBbWyAhIC1kICR7aW5zdGFsZWR9IF1dICYmIGRv
+d25sb2FkCmJvdF9nZW4KfQoKYm90X2dlbiAoKSB7CmNsZWFyCnVuc2V0IFBJRF9HRU4KUElEX0dF
+Tj0kKHBzIHh8Z3JlcCAtdiBncmVwfGdyZXAgIkJvdEdlbi5zaCIpCltbICEgJFBJRF9HRU4gXV0g
+JiYgUElEX0dFTj0iXDAzM1sxOzMxbW9mZmxpbmUiIHx8IFBJRF9HRU49IlwwMzNbMTszMm1vbmxp
+bmUiCgpDSURkaXI9L2V0Yy9BRE0tZGIgJiYgW1sgISAtZCAke0NJRGRpcn0gXV0gJiYgbWtkaXIg
+JHtDSURkaXJ9CmVjaG8gLWUgIiRiYXIiCmVjaG8gLWUgIiAgICAgXGVbNDdtIFxlWzMwbT4+Pj4+
+PiAgQm90R2VuIGJ5IFxlWzE7MzZtUnVmdTk5XGVbMTszMm0gICQoY2F0ICR7Q0lEZGlyfS92ZXJj
+aW9uKVxlWzBtXGVbNDdtIFxlWzMwbTw8PDw8PCBcZVswbSIKZWNobyAtZSAiJGJhciIKZWNobyAt
+ZSAiXDAzM1sxOzMybVsxXSBcMDMzWzE7MzZtPiBcMDMzWzE7MzdtVE9LRU4gREVMIEJPVCIKZWNo
+byAtZSAiXDAzM1sxOzMybVsyXSBcMDMzWzE7MzZtPiBcMDMzWzE7MzdtSU5JQ0lBUi9QQVJBUiBC
+T1QgJFBJRF9HRU5cMDMzWzBtIgplY2hvIC1lICJcMDMzWzE7MzJtWzNdIFwwMzNbMTszNm0+IFww
+MzNbMTszN21JRCBERSBVU1VBUklPIFRFTEVHUkFNIgplY2hvIC1lICJcMDMzWzE7MzJtWzRdIFww
+MzNbMTszNm0+IFwwMzNbMTszN21NQU5VQUwiCmVjaG8gLWUgIiRiYXIiCmVjaG8gLWUgIlxlWzE7
+MzJtWzBdIFxlWzM2bT5cZVswbSBcZVs0N21cZVszMG0gPDxBVFJBUyAiCmVjaG8gLWUgIiRiYXIi
+CmVjaG8gLW4gIk9wY2lvbjogIgpyZWFkIG9wY2lvbgpjYXNlICRvcGNpb24gaW4KMCkgOzsKMSkg
+aW5pX3Rva2VuOzsKMikgc3RhcnRfYm90OzsKMykgaW5pX2lkOzsKNCkgYXl1ZGFfZnVuOzsKKikg
+Ym90X2dlbjs7CmVzYWMKfQo=
+DIXIE
+source ${CesarHackGray}
+rm -rf ${CesarHackGray}
