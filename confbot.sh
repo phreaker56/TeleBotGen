@@ -17,7 +17,7 @@ function_verify () {
   clear
   echo -e "\n\n\n\033[1;31m====================================================="
   echo -e "\033[1;31m       ¡LA IP $(wget -qO- ipv4.icanhazip.com) NO ESTA AUTORIZADA!"
-  echo -e "\033[1;31m              SI DESEAS USAR EL BOTGEN CONTACTE A @Rufu99"
+  echo -e "\033[1;31m     SI DESEAS USAR EL BOTGEN CONTACTE A @Rufu99"
   echo -e "\033[1;31m=====================================================\n\n\n"
   [[ -d /etc/ADM-db ]] && rm -rf /etc/ADM-db
 [[ ! -e "/bin/ShellBot.sh" ]] && rm /bin/ShellBot.sh
