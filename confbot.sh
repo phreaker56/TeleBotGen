@@ -20,7 +20,7 @@ function_verify () {
   echo -e "\033[1;31m=====================================================\n\n\n"
   [[ -d /etc/ADM-db ]] && rm -rf /etc/ADM-db
 [[ ! -e "/bin/ShellBot.sh" ]] && rm /bin/ShellBot.sh
-  exit 1
+  read foo
   } || {
   ### INTALAR VERCION DE SCRIPT
   v1=$(curl -sSL "https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/Vercion")
