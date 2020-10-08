@@ -57,7 +57,6 @@ echo -e "\033[1;31m- \033[1;32mRecibido!"
 } || echo -e "\033[1;31m- \033[1;31mFalla (no recibido!)"
 done
  }
- rm $HOME/lista-arq
 }
 
 ini_token () {
@@ -130,6 +129,7 @@ bot_gen
 }
 
 bot_gen () {
+[[ ! -e $HOME/lista-arq ]] && rm $HOME/lista-arq
 clear
 unset PID_GEN
 PID_GEN=$(ps x|grep -v grep|grep "BotGen.sh")
