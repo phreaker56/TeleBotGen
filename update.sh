@@ -155,3 +155,21 @@ case $opcion in
 *) bot_gen;;
 esac
 }
+
+download () {
+cd $HOME
+REQUEST=$(echo $SCPresq|$SUB_DOM)
+wget -O "$HOME/lista-arq" ${REQUEST}/lista-bot > /dev/null 2>&1
+sleep 1s
+[[ -e $HOME/lista-arq ]] && {
+for arqx in `cat $HOME/lista-arq`; do
+echo -ne "\033[1;33mDescargando: \033[1;31m[$arqx] "
+wget -O $HOME/$arqx ${REQUEST}/${arqx} > /dev/null 2>&1 && {
+echo -e "\033[1;31m- \033[1;32mRecibido!"
+[[ -e $HOME/$arqx ]] && veryfy_fun $arqx
+} || echo -e "\033[1;31m- \033[1;31mFalla (no recibido!)"
+done
+ }
+ rm $HOME/lista-arq
+}
+
