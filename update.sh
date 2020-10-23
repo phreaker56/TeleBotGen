@@ -155,8 +155,7 @@ case $opcion in
 *) bot_gen;;
 esac
 }
-
-download () {
+update () {
 cd $HOME
 REQUEST=$(echo $SCPresq|$SUB_DOM)
 wget -O "$HOME/lista-arq" ${REQUEST}/lista-bot > /dev/null 2>&1
