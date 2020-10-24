@@ -7,8 +7,6 @@ SUB_DOM='base64 -d'
 bar="\e[0;36m=====================================================\e[0m"
 
 update () {
-PID_GEN=$(ps x|grep -v grep|grep "BotGen.sh")
-[[ $PID_GEN ]] && start_bot
 [[ -d ${dirs} ]] && rm -rf ${dirs}
 [[ -e ${dirb} ]] && rm ${dirb}/BotGen.sh
 [[ -e /bin/ShellBot.sh ]] && rm /bin/ShellBot.sh
