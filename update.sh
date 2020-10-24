@@ -27,6 +27,7 @@ fi
 
 veryfy_fun () {
 dirs="${dirb}/sources" && [[ ! -d ${dirs} ]] && mkdir ${dirs}
+dirs="${dirb}/sources" && [[ ! -d ${dirs} ]] && mkdir ${dirs}
 unset ARQ
 case $1 in
 "BotGen.sh")ARQ="${dirb}";;
