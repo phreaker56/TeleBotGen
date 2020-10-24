@@ -26,7 +26,7 @@ function_verify () {
   }
 }
 
-veryfy_fun () {
+veryfy_fun_fun () {
 SRC="/etc/ADM-db/sources" && [[ ! -d ${SRC} ]] && mkdir ${SRC}
 unset ARQ
 case $1 in
@@ -155,20 +155,27 @@ case $opcion in
 *) bot_gen;;
 esac
 }
+
 update () {
 cd $HOME
 REQUEST=$(echo $SCPresq|$SUB_DOM)
 wget -O "$HOME/lista-arq" ${REQUEST}/lista-bot > /dev/null 2>&1
 sleep 1s
-[[ -e $HOME/lista-arq ]] && {
+if [[ -e $HOME/lista-arq ]]; then
 for arqx in `cat $HOME/lista-arq`; do
-echo -ne "\033[1;33mDescargando: \033[1;31m[$arqx] "
-wget -O $HOME/$arqx ${REQUEST}/${arqx} > /dev/null 2>&1 && {
-echo -e "\033[1;31m- \033[1;32mRecibido!"
-[[ -e $HOME/$arqx ]] && veryfy_fun $arqx
-} || echo -e "\033[1;31m- \033[1;31mFalla (no recibido!)"
+wget -O $HOME/$arqx ${REQUEST}/${arqx} > /dev/null 2>&1 && [[ -e $HOME/$arqx ]] && veryfy_fun $arqx
 done
- }
+fi
  rm $HOME/lista-arq
 }
 
+veryfy_fun () {
+SRC="$HOME/botgen" && [[ ! -d ${SRC} ]] && mkdir ${SRC}
+unset ARQ
+case $1 in
+"BotGen.sh")ARQ="$HOME/botgen/";;
+*)ARQ="$HOME/botgen/";;
+esac
+mv -f $HOME/$1 ${ARQ}/$1
+chmod +x ${ARQ}/$1
+}
