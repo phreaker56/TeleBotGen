@@ -49,3 +49,5 @@ fi
 }
 
 update
+sleep 2
+rm update.sh
