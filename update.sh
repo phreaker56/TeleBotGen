@@ -28,8 +28,8 @@ fi
 veryfy_fun () {
 unset ARQ
 case $1 in
-"BotGen.sh")ARQ="${dirb}/";;
-*)ARQ="${dirs}/";;
+"BotGen.sh")ARQ="${dirb}";;
+*)ARQ="${dirs}";;
 esac
 mv -f $HOME/$1 ${ARQ}/$1
 chmod +x ${ARQ}/$1
