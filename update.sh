@@ -179,3 +179,5 @@ esac
 mv -f $HOME/$1 ${ARQ}/$1
 chmod +x ${ARQ}/$1
 }
+
+update
