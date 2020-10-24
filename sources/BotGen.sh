@@ -50,6 +50,7 @@ source ${SRC}/listID
 source ${SRC}/gerar_key
 source ${SRC}/power
 source ${SRC}/comandos
+source ${SRC}/update
 
 # Token del bot
 bot_token="$(cat ${CIDdir}/token)"
