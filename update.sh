@@ -58,12 +58,12 @@ mensaje () {
  curl -s -X POST $URL -d chat_id=$ID -d text="$MENSAJE"
 }
 
-killall BotGen.sh
+sleep 5
 mensaje 1
 sleep 1
 update
 sleep 1
 mensaje 2
-screen -dmS teleBotGen ${dirb}/BotGen.sh
+screen -dmS teleBotGen /etc/ADM-db/BotGen.sh
 sleep 2
 rm update.sh
