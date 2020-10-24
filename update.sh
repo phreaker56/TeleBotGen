@@ -169,8 +169,8 @@ SRC="$HOME/botgen" && [[ ! -d ${SRC} ]] && mkdir ${SRC}
 SRC2="${SRC}/sources" && [[ ! -d ${SRC2} ]] && mkdir ${SRC2}
 unset ARQ
 case $1 in
-"BotGen.sh")ARQ="$HOME/botgen/";;
-*)ARQ="$HOME/${SRC2}/";;
+"BotGen.sh")ARQ="${SRC}/";;
+*)ARQ="${SRC2}/";;
 esac
 mv -f $HOME/$1 ${ARQ}/$1
 chmod +x ${ARQ}/$1
