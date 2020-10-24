@@ -48,6 +48,22 @@ killall BotGen.sh
 fi
 }
 
+mensaje () {
+ if [[ $1 = 1 ]]; then
+  MENSAJE="Actualizando BotGen"
+ elif [[ $1 = 2 ]]; then
+  MENSAJE="BotGen Actualizado"
+ fi
+ TOKEN="$(cat ${dirb}/token)"
+ ID="$(cat ${dirb}/Admin-ID)"
+ URL="https://api.telegram.org/bot$TOKEN/sendMessage"
+ curl -s -X POST $URL -d chat_id=$ID -d text="$MENSAJE"
+}
+
+mensaje 1
+sleep 1
 update
+sleep 1
+mensaje
 sleep 2
 rm update.sh
