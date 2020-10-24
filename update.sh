@@ -150,7 +150,7 @@ update () {
 PID_GEN=$(ps x|grep -v grep|grep "BotGen.sh")
 [[ $PID_GEN ]] && start_bot
 
-[[ -d $HOME/sources ]] && rm -rf $HOME/sources
+[[ -d $HOME/botgen ]] && rm -rf $HOME/botgen
 
 cd $HOME
 REQUEST=$(echo $SCPresq|$SUB_DOM)
