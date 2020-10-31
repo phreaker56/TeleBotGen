@@ -18,7 +18,7 @@ msj_fun
 upfile_src
 }
 
-ddaddID_src () {
+addID_src () {
 [[ $(cat ${CID}|grep "${1}") = "" ]] && {
 echo "/${1}" >> ${CID}
 bot_retorno="$LINE\n"
@@ -38,24 +38,4 @@ bot_retorno="$LINE\n"
           bot_retorno+="$LINE\n"
 msj_fun
   }
-}
-
-addID_src () {
-
-	ShellBot.sendMessage	--chat_id ${message_from_id[$id]} \
-				--text "add:" \
-				--reply_markup "$(ShellBot.ForceReply)"
-				
-
-case ${message_reply_to_message_text[$id]} in
-	'add:')
-	echo "Nome: ${message_text[$id]}" >> ${CID}
-
-	ShellBot.sendMessage	--chat_id ${message_from_id[$id]} \
-				--text "✅ *Cadastro realizado com sucesso.* ✅\n\n$(< ${CID})" \
-				--parse_mode markdown
-				;;
-esac
-fi
-
 }
