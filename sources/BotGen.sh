@@ -22,8 +22,8 @@ function_verify () {
   }
 }
 
-check_ip
-function_verify
+#check_ip
+#function_verify
   
 CIDdir=/etc/ADM-db && [[ ! -d ${CIDdir} ]] && mkdir ${CIDdir}
 SRC="${CIDdir}/sources" && [[ ! -d ${SRC} ]] && mkdir ${SRC}
@@ -105,6 +105,12 @@ msj_fun () {
 							--text "<i>$(echo -e "$bot_retorno")</i>" \
 							--parse_mode html
 	return 0
+}
+
+reply () {
+		  ShellBot.sendMessage	--chat_id ${message_from_id[$id]} \
+							--text "$bot_retorno" \
+							--reply_markup "$(ShellBot.ForceReply)"
 }
 
 # Ejecutando escucha del bot
