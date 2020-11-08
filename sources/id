@@ -7,12 +7,6 @@ bot_retorno="====================\n"
 msj_fun
 }
 
-deleteID_src () {
-          bot_retorno="/del"
-      reply
-      listID_src
-}
-
 deleteID_reply () {
 delid=$(sed -n ${message_text[$id]}p ${CID})
 sed -i "${message_text[$id]}d" ${CID}
@@ -22,12 +16,6 @@ bot_retorno="$LINE\n"
           bot_retorno+="$LINE\n"
 msj_fun
 upfile_src
-}
-
-
-addID_src () {
-          bot_retorno="/add"
-      reply
 }
 
 addID_reply () {

@@ -56,8 +56,33 @@ source ${SRC}/update
 bot_token="$(cat ${CIDdir}/token)"
 
 # Inicializando el bot
-ShellBot.init --token "$bot_token" --monitor --return map
+ShellBot.init --token "$bot_token" --monitor --flush --return map
 ShellBot.username
+
+botao_conf=''
+
+ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/add' --callback_data '/add'
+ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/del' --callback_data '/del'
+
+reply () {
+	[[ ! -z ${callback_query_message_chat_id[$id]} ]] && var=${callback_query_message_chat_id[$id]} || var=${message_from_id[$id]}
+
+		 	 ShellBot.sendMessage	--chat_id  $var \
+									--text "${callback_query_data}" \
+									--parse_mode html \
+									--reply_markup "$(ShellBot.ForceReply)"
+	[[ "${callback_query_data}" = /del ]] && listID_src
+}
+
+ShellBot.regHandleFunction --function reply --callback_data /add
+ShellBot.regHandleFunction --function reply --callback_data /del
+
+menu_print () {
+				ShellBot.sendMessage 	--chat_id ${message_chat_id[$id]} \
+										--text "<i>$(echo -e $bot_retorno)</i>" \
+										--parse_mode html \
+										--reply_markup "$(ShellBot.InlineKeyboardMarkup -b 'botao_conf')"
+}
 
 download_file () {
 # shellbot.sh editado linea 3986
@@ -101,22 +126,20 @@ local bot_retorno="$LINE\n"
 }
 
 msj_fun () {
-	      ShellBot.sendMessage --chat_id ${message_chat_id[$id]} \
+	[[ ! -z ${callback_query_message_chat_id[$id]} ]] && var=${callback_query_message_chat_id[$id]} || var=${message_chat_id[$id]}
+	      ShellBot.sendMessage --chat_id $var \
 							--text "<i>$(echo -e "$bot_retorno")</i>" \
 							--parse_mode html
-	return 0
-}
-
-reply () {
-		  ShellBot.sendMessage	--chat_id ${message_from_id[$id]} \
-							--text "$bot_retorno" \
-							--reply_markup "$(ShellBot.ForceReply)"
+	#return 0
 }
 
 # Ejecutando escucha del bot
 while true; do
     ShellBot.getUpdates --limit 100 --offset $(ShellBot.OffsetNext) --timeout 30
     for id in $(ShellBot.ListUpdates); do
+
+    	ShellBot.watchHandle --callback_data ${callback_query_data[$id]}
+
 	    chatuser="$(echo ${message_chat_id[$id]}|cut -d'-' -f2)"
 	    echo $chatuser >&2
 	    comando=(${message_text[$id]})

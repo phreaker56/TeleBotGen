@@ -16,11 +16,12 @@ bot_retorno="=========COMANDOS=========\n"
 			 bot_retorno+="/ayuda (muestra ayuda de los comandos)\n"
 			 bot_retorno+="$LINE\n"
 		 fi
+		 msj_fun
 	 else
 		 unset PID_GEN
 		 PID_GEN=$(ps x|grep -v grep|grep "http-server.sh")
 		 [[ ! $PID_GEN ]] && PID_GEN=❌ || PID_GEN=✅
-		 
+
 		 bot_retorno+="/infosys (informacion del sistema)\n"
 		 bot_retorno+="/ID (muestra sus ID)\n"
 		 bot_retorno+="/add [id](añadir nuevas ID)\n"
@@ -35,6 +36,6 @@ bot_retorno="=========COMANDOS=========\n"
 		 bot_retorno+="/update (actualiza el BotGen)\n"
 		 bot_retorno+="/reboot (Reinicia el servidor vps)\n"
 		 bot_retorno+="$LINE\n"
+		 menu_print
 	 fi	
-msj_fun
 }
