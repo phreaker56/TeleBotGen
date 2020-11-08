@@ -41,8 +41,6 @@ comand () {
 					 /[Pp]ower)start_gen &;;
 			 		 /[Ii]nfosys)infosys_src &;;
 			 		 /[Ll]ist)listID_src &;;
-			 		 /[Aa]dd)addID_src &;;
-			 		 /[Dd]el|/[Dd]elid)deleteID_src &;;
 					 /[Rr]eboot)reboot_src &;;
 			 		 /[Ii]nstal)link_src &;;
 			 		 /[Cc]ache)cache_src &;;
