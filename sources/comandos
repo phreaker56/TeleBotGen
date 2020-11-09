@@ -7,17 +7,18 @@ comand () {
 				 /[Ii]d|/[Ii]D)myid_src &;;
 				 /[Mm]enu|[Mm]enu|/[Ss]tart|[Ss]tart|[Cc]omensar|/[Cc]omensar)menu_src &;;
 				 /[Aa]yuda|[Aa]yuda|[Hh]elp|/[Hh]elp)ayuda_src &;;
-				 *)invalido &;;
+				 /*|*)invalido_fun &;;
 			 esac
 		 else
+		 	if [[ ${message_text[$id]} ]]; then
 			 case ${comando[0]} in
 				 /[Mm]enu|[Mm]enu|/[Ss]tart|[Ss]tart|[Cc]omensar|/[Cc]omensar)menu_src &;;
 				 /[Aa]yuda|[Aa]yuda|[Hh]elp|/[Hh]elp)ayuda_src &;;
 				 /[Ii]d|/[Ii]D)myid_src &;;
-				 /[Kk]eygen)gerar_key &;;
 				 /[Ii]nstal)link_src &;;
-				 *)invalido &;;
+				 /*|*)invalido_fun &;;
 			 esac
+			fi
 		 fi
 	    else
 
@@ -37,7 +38,6 @@ comand () {
 					 /[Mm]enu|[Mm]enu|/[Ss]tart|[Ss]tart|[Cc]omensar|/[Cc]omensar)menu_src &;;
 					 /[Aa]yuda|[Aa]yuda|[Hh]elp|/[Hh]elp)ayuda_src &;;
 					 /[Ii]d|/[Ii]D)myid_src &;;
-					 /[Kk]eygen)gerar_key &;;
 					 /[Pp]ower)start_gen &;;
 			 		 /[Ii]nfosys)infosys_src &;;
 			 		 /[Ll]ist)listID_src &;;

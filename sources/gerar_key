@@ -8,7 +8,9 @@ INSTA_ARQUIVOS="ADMVPS.zip"
 DIR="/etc/http-shell"
 LIST="lista-arq"
 
+
 gerar_key () {
+[[ -z ${message_chat_id} ]] && chatuser="$(echo ${callback_query_message_chat_id[$id]}|cut -d'-' -f2)"
 meu_ip_fun
 valuekey="$(date | md5sum | head -c10)"
 valuekey+="$(echo $(($RANDOM*10))|head -c 5)"
@@ -24,6 +26,7 @@ bot_retorno+="$LINE\n"
 bot_retorno+="Esta key se autodestruira en 6hs\npasado este tiempo deve generar una nueva key.\n"
 bot_retorno+="$LINE\n"
 msj_fun
+
 echo -e $bot_retorno >> ${keytxt}/key_${chatuser}.txt
 upfile_fun ${keytxt}/key_${chatuser}.txt
 rm ${keytxt}/key_${chatuser}.txt

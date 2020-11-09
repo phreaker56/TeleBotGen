@@ -1,4 +1,5 @@
 #!/bin/bash
+# -*- ENCODING: UTF-8 -*-
 
 check_ip () {
 MIP=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -o -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
@@ -59,11 +60,6 @@ bot_token="$(cat ${CIDdir}/token)"
 ShellBot.init --token "$bot_token" --monitor --flush --return map
 ShellBot.username
 
-botao_conf=''
-
-ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/add' --callback_data '/add'
-ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/del' --callback_data '/del'
-
 reply () {
 	[[ ! -z ${callback_query_message_chat_id[$id]} ]] && var=${callback_query_message_chat_id[$id]} || var=${message_from_id[$id]}
 
@@ -74,14 +70,18 @@ reply () {
 	[[ "${callback_query_data}" = /del ]] && listID_src
 }
 
-ShellBot.regHandleFunction --function reply --callback_data /add
-ShellBot.regHandleFunction --function reply --callback_data /del
-
 menu_print () {
+	if [[ $(echo $permited|grep "${chatuser}") = "" ]]; then
+				ShellBot.sendMessage 	--chat_id ${message_chat_id[$id]} \
+										--text "<i>$(echo -e $bot_retorno)</i>" \
+										--parse_mode html \
+										--reply_markup "$(ShellBot.InlineKeyboardMarkup -b 'botao_user')"
+	else
 				ShellBot.sendMessage 	--chat_id ${message_chat_id[$id]} \
 										--text "<i>$(echo -e $bot_retorno)</i>" \
 										--parse_mode html \
 										--reply_markup "$(ShellBot.InlineKeyboardMarkup -b 'botao_conf')"
+	fi
 }
 
 download_file () {
@@ -111,7 +111,8 @@ msj_add () {
 }
 
 upfile_fun () {
-          ShellBot.sendDocument --chat_id ${message_chat_id[$id]}  \
+	[[ ! -z ${callback_query_message_chat_id[$id]} ]] && var=${callback_query_message_chat_id[$id]} || var=${message_chat_id[$id]}
+          ShellBot.sendDocument --chat_id $var  \
                              --document @${1}
 }
 
@@ -130,8 +131,20 @@ msj_fun () {
 	      ShellBot.sendMessage --chat_id $var \
 							--text "<i>$(echo -e "$bot_retorno")</i>" \
 							--parse_mode html
-	#return 0
+	return 0
 }
+
+botao_conf=''
+botao_user=''
+
+ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/add' --callback_data '/add'
+ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/del' --callback_data '/del'
+ShellBot.InlineKeyboardButton --button 'botao_conf' --line 2 --text '/keygen' --callback_data '/keygen'
+ShellBot.InlineKeyboardButton --button 'botao_user' --line 1 --text '/keygen' --callback_data '/keygen'
+
+ShellBot.regHandleFunction --function reply --callback_data /add
+ShellBot.regHandleFunction --function reply --callback_data /del
+ShellBot.regHandleFunction --function gerar_key --callback_data /keygen
 
 # Ejecutando escucha del bot
 while true; do
