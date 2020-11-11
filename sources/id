@@ -32,6 +32,8 @@ addID_reply () {
           bot_retor="$LINE\n"
           bot_retor+="El Administrador te autoriso\n"
           bot_retor+="para usar el comando /keygen\n"
+          bot_retor+="digita el comando /menu\n"
+          bot_retor+="para actualizar el menu de comandos\n"
           bot_retor+="$LINE\n"
       msj_fun
       msj_add ${message_text[$id]}
