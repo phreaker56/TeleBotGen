@@ -11,7 +11,6 @@ bot_retorno="=========COMANDOS=========\n"
 			 msj_fun
 		 else
 			 bot_retorno+="/ID (muestra sus ID)\n"
-			 bot_retorno+="/Keygen (genera una key)\n"
 			 bot_retorno+="/instal (link de instalacion)\n"
 			 bot_retorno+="/menu (muestra este menu)\n"
 			 bot_retorno+="/ayuda (muestra ayuda de los comandos)\n"
