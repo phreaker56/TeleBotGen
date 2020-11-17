@@ -145,7 +145,7 @@ ShellBot.InlineKeyboardButton --button 'botao_user' --line 1 --text '/keygen' --
 
 ShellBot.regHandleFunction --function reply --callback_data /add
 ShellBot.regHandleFunction --function reply --callback_data /del
-ShellBot.regHandleFunction --function reply --callback_data /list
+ShellBot.regHandleFunction --function listID_src --callback_data /list
 ShellBot.regHandleFunction --function gerar_key --callback_data /keygen
 
 # Ejecutando escucha del bot
