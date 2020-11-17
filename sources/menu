@@ -21,7 +21,10 @@ bot_retorno="=========COMANDOS=========\n"
 	 else
 		 unset PID_GEN
 		 PID_GEN=$(ps x|grep -v grep|grep "http-server.sh")
-		 [[ ! $PID_GEN ]] && PID_GEN=❌ || PID_GEN=✅
+		 [[ ! $PID_GEN ]] && PID_GEN='(Offline) ❌' || PID_GEN='(Online) ✅'
+		 
+		 bot_retorno+="$PID_GEN\n"
+		 bot_retorno+="$LINE\n"
 
 		 bot_retorno+="/infosys (informacion del sistema)\n"
 		 bot_retorno+="/ID (muestra sus ID)\n"
