@@ -140,12 +140,14 @@ botao_user=''
 ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/add' --callback_data '/add'
 ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/del' --callback_data '/del'
 ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/list' --callback_data '/list'
+ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/ID' --callback_data '/ID'
 ShellBot.InlineKeyboardButton --button 'botao_conf' --line 2 --text '/keygen' --callback_data '/keygen'
 ShellBot.InlineKeyboardButton --button 'botao_user' --line 1 --text '/keygen' --callback_data '/keygen'
 
 ShellBot.regHandleFunction --function reply --callback_data /add
 ShellBot.regHandleFunction --function reply --callback_data /del
 ShellBot.regHandleFunction --function listID_src --callback_data /list
+ShellBot.regHandleFunction --function myid_src --callback_data /ID
 ShellBot.regHandleFunction --function gerar_key --callback_data /keygen
 
 # Ejecutando escucha del bot
