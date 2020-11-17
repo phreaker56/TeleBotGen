@@ -20,19 +20,16 @@ bot_retorno="=========COMANDOS=========\n"
 		 
 	 else
 		 unset PID_GEN
-unset PID_on_off
 		 PID_GEN=$(ps x|grep -v grep|grep "http-server.sh")
-		 [[ ! $PID_GEN ]] && PID_GEN='(offline) ❌' || PID_GEN='(online) ✅'
-                 bot_retorno+="$PID_GEN\n"
+		 [[ ! $PID_GEN ]] && PID_GEN=❌ || PID_GEN=✅
 
-		 bot_retorno+="$LINE\n"lista
 		 bot_retorno+="/infosys (informacion del sistema)\n"
 		 bot_retorno+="/ID (muestra sus ID)\n"
 		 bot_retorno+="/add [id](añadir nuevas ID)\n"
 		 bot_retorno+="/del [id](quitar un ID)\n"
 		 bot_retorno+="/list (lista de ID permitidas)\n"
 		 bot_retorno+="/instal (link de instalacion)\n"
-		 bot_retorno+="/power $PID_GEN\n"
+		 bot_retorno+="/power (online/offline) $PID_GEN\n"
 		 bot_retorno+="/menu (muestra este menu)\n"
 		 bot_retorno+="/ayuda (muestra ayuda de los comandos)\n"
 		 bot_retorno+="/cache (Limpiar cache Ram)\n"
