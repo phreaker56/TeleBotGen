@@ -71,13 +71,17 @@ reply () {
 }
 
 menu_print () {
+[[ ! -z ${callback_query_message_chat_id[$id]} ]] && var=${callback_query_message_chat_id[$id]} || var=${message_chat_id[$id]}
+
 	if [[ $(echo $permited|grep "${chatuser}") = "" ]]; then
-				ShellBot.sendMessage 	--chat_id ${message_chat_id[$id]} \
+				# ShellBot.sendMessage 	--chat_id ${message_chat_id[$id]} \
+				ShellBot.sendMessage 	--chat_id $var \
 										--text "<i>$(echo -e $bot_retorno)</i>" \
 										--parse_mode html \
 										--reply_markup "$(ShellBot.InlineKeyboardMarkup -b 'botao_user')"
 	else
-				ShellBot.sendMessage 	--chat_id ${message_chat_id[$id]} \
+				# ShellBot.sendMessage 	--chat_id ${message_chat_id[$id]} \
+				ShellBot.sendMessage 	--chat_id $var \
 										--text "<i>$(echo -e $bot_retorno)</i>" \
 										--parse_mode html \
 										--reply_markup "$(ShellBot.InlineKeyboardMarkup -b 'botao_conf')"
