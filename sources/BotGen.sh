@@ -143,6 +143,7 @@ ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/list' --ca
 ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/ID' --callback_data '/ID'
 
 ShellBot.InlineKeyboardButton --button 'botao_conf' --line 2 --text '/power' --callback_data '/power'
+ShellBot.InlineKeyboardButton --button 'botao_conf' --line 2 --text '/menu' --callback_data '/menu'
 
 ShellBot.InlineKeyboardButton --button 'botao_conf' --line 3 --text '/keygen' --callback_data '/keygen'
 ShellBot.InlineKeyboardButton --button 'botao_user' --line 1 --text '/keygen' --callback_data '/keygen'
@@ -154,6 +155,7 @@ ShellBot.regHandleFunction --function myid_src --callback_data /ID
 
 
 ShellBot.regHandleFunction --function start_gen --callback_data /power
+ShellBot.regHandleFunction --function menu_src --callback_data /menu
 
 ShellBot.regHandleFunction --function gerar_key --callback_data /keygen
 
