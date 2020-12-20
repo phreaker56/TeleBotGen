@@ -24,6 +24,7 @@ bot_retorno="=========COMANDOS=========\n"
 		 [[ ! $PID_GEN ]] && PID_GEN='(Offline) ❌' || PID_GEN='(Online) ✅'
 		 
 		 bot_retorno+="$PID_GEN\n"
+		 bot_retorno+="$PID_GEN $k_used\n"
 		 bot_retorno+="$LINE\n"
 
 		 bot_retorno+="/infosys (informacion del sistema)\n"
