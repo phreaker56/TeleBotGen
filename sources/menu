@@ -23,13 +23,13 @@ bot_retorno="=========COMANDOS=========\n"
 		 PID_GEN=$(ps x|grep -v grep|grep "http-server.sh")
 		 [[ ! $PID_GEN ]] && PID_GEN='(Offline) ❌' || PID_GEN='(Online) ✅'
 
-unset usadas
-usadas="$(cat /etc/http-instas)"
-[[ ! $usadas ]] && k_used="0" || k_used="$usadas"
+		 unset usadas
+		 usadas="$(cat /etc/http-instas)"
+		 [[ ! $usadas ]] && k_used="0" || k_used="$usadas"
 		 
-		 bot_retorno+="$PID_GEN | Keys Usadas [$k_used]\n"
-		 bot_retorno+="$LINE\n"
+		 bot_retorno+="Gen $PID_GEN | Keys Usadas [$k_used]\n"
 
+		 bot_retorno+="$LINE\n"
 		 bot_retorno+="/infosys (informacion del sistema)\n"
 		 bot_retorno+="/list (lista de ID permitidas)\n"
 		 bot_retorno+="/instal (link de instalacion)\n"
