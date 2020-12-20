@@ -1,4 +1,5 @@
 #!/bin/bash
+# -*- ENCODING: UTF-8 -*-
 
 comand () {
 	    if [[ $(echo $permited|grep "${chatuser}") = "" ]]; then
@@ -10,12 +11,13 @@ comand () {
 				 /*|*)invalido_fun &;;
 			 esac
 		 else
-		 	if [[ ${message_text[$id]} ]]; then
+		 	if [[ ${message_text[$id]} || ${callback_query_data[$id]} ]]; then
 			 case ${comando[0]} in
 				 /[Mm]enu|[Mm]enu|/[Ss]tart|[Ss]tart|[Cc]omensar|/[Cc]omensar)menu_src &;;
 				 /[Aa]yuda|[Aa]yuda|[Hh]elp|/[Hh]elp)ayuda_src &;;
 				 /[Ii]d|/[Ii]D)myid_src &;;
 				 /[Ii]nstal)link_src &;;
+				 /[Kk]eygen)gerar_key &;;
 				 /*|*)invalido_fun &;;
 			 esac
 			fi
@@ -32,13 +34,15 @@ comand () {
 			elif [[ ${message_document_file_id[$id]} ]]; then
 					 download_file
 
-	    	elif [[ ${message_text[$id]} ]]; then
+	    	elif [[ ${message_text[$id]} || ${callback_query_data[$id]} ]]; then
 
 		 		case ${comando[0]} in
 					 /[Mm]enu|[Mm]enu|/[Ss]tart|[Ss]tart|[Cc]omensar|/[Cc]omensar)menu_src &;;
 					 /[Aa]yuda|[Aa]yuda|[Hh]elp|/[Hh]elp)ayuda_src &;;
 					 /[Ii]d|/[Ii]D)myid_src &;;
+					 /[Aa]dd|/[Dd]el)reply &;;
 					 /[Pp]ower)start_gen &;;
+					 /[Kk]eygen)gerar_key &;;
 			 		 /[Ii]nfosys)infosys_src &;;
 			 		 /[Ll]ist)listID_src &;;
 					 /[Rr]eboot)reboot_src &;;
@@ -47,6 +51,7 @@ comand () {
 					 /[Uu]pdate|/[Aa]ctualizar)update &;;
 			 		 /*|*)invalido_fun &;;
 				esac
+
 			fi
 
 	    fi

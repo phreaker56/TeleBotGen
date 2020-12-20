@@ -61,6 +61,16 @@ ShellBot.init --token "$bot_token" --monitor --flush --return map
 ShellBot.username
 
 reply () {
+	[[ ! -z ${callback_query_message_chat_id[$id]} ]] && var=${callback_query_message_chat_id[$id]} || var=${message_chat_id[$id]}
+
+		 	 ShellBot.sendMessage	--chat_id  $var \
+									--text "$comando" \
+									--parse_mode html \
+									--reply_markup "$(ShellBot.ForceReply)"
+	[[ "${callback_query_data}" = /del || "${message_text}" = /del ]] && listID_src
+}
+
+reply2 () {
 	[[ ! -z ${callback_query_message_chat_id[$id]} ]] && var=${callback_query_message_chat_id[$id]} || var=${message_from_id[$id]}
 
 		 	 ShellBot.sendMessage	--chat_id  $var \
@@ -121,10 +131,11 @@ upfile_fun () {
 }
 
 invalido_fun () {
+	[[ ! -z ${callback_query_message_chat_id[$id]} ]] && var=${callback_query_message_chat_id[$id]} || var=${message_chat_id[$id]}
 local bot_retorno="$LINE\n"
          bot_retorno+="Comando invalido!\n"
          bot_retorno+="$LINE\n"
-	     ShellBot.sendMessage --chat_id ${message_chat_id[$id]} \
+	     ShellBot.sendMessage --chat_id $var \
 							--text "<i>$(echo -e $bot_retorno)</i>" \
 							--parse_mode html
 	return 0	
@@ -137,6 +148,7 @@ msj_fun () {
 							--parse_mode html
 	return 0
 }
+
 
 botao_conf=''
 botao_user=''
@@ -152,27 +164,20 @@ ShellBot.InlineKeyboardButton --button 'botao_conf' --line 2 --text '/menu' --ca
 ShellBot.InlineKeyboardButton --button 'botao_conf' --line 3 --text '/keygen' --callback_data '/keygen'
 ShellBot.InlineKeyboardButton --button 'botao_user' --line 1 --text '/keygen' --callback_data '/keygen'
 
-ShellBot.regHandleFunction --function reply --callback_data /add
-ShellBot.regHandleFunction --function reply --callback_data /del
-ShellBot.regHandleFunction --function listID_src --callback_data /list
-ShellBot.regHandleFunction --function myid_src --callback_data /ID
-
-
-ShellBot.regHandleFunction --function start_gen --callback_data /power
-ShellBot.regHandleFunction --function menu_src --callback_data /menu
-
-ShellBot.regHandleFunction --function gerar_key --callback_data /keygen
-
 # Ejecutando escucha del bot
 while true; do
     ShellBot.getUpdates --limit 100 --offset $(ShellBot.OffsetNext) --timeout 30
     for id in $(ShellBot.ListUpdates); do
 
-    	ShellBot.watchHandle --callback_data ${callback_query_data[$id]}
-
 	    chatuser="$(echo ${message_chat_id[$id]}|cut -d'-' -f2)"
+	    [[ -z $chatuser ]] && chatuser="$(echo ${callback_query_from_id[$id]}|cut -d'-' -f2)"
 	    echo $chatuser >&2
+	    #echo "user id $chatuser"
+
 	    comando=(${message_text[$id]})
+	    [[ -z $comando ]] && comando=(${callback_query_data[$id]})
+	    #echo "comando $comando"
+
 	    [[ ! -e "${CIDdir}/Admin-ID" ]] && echo "null" > ${CIDdir}/Admin-ID
 	    permited=$(cat ${CIDdir}/Admin-ID)
 	    comand

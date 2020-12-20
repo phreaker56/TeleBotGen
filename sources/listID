@@ -1,4 +1,5 @@
 #!/bin/bash
+# -*- ENCODING: UTF-8 -*-
 
 listID_src () {
 lsid=$(cat -n ${CID})
