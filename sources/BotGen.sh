@@ -154,7 +154,7 @@ ShellBot.InlineKeyboardButton --button 'botao_user' --line 1 --text '/keygen' --
 
 ShellBot.regHandleFunction --function reply --callback_data /add
 ShellBot.regHandleFunction --function reply --callback_data /del
-ShellBot.regHandleFunction --function listID_src --callback_data /list
+# ShellBot.regHandleFunction --function listID_src --callback_data /list
 ShellBot.regHandleFunction --function myid_src --callback_data /ID
 
 
@@ -169,6 +169,8 @@ while true; do
     for id in $(ShellBot.ListUpdates); do
 
     	ShellBot.watchHandle --callback_data ${callback_query_data[$id]}
+
+	    ShellBot.regHandleFunction --function listID_src --callback_data /list
 
 	    chatuser="$(echo ${message_chat_id[$id]}|cut -d'-' -f2)"
 	    echo $chatuser >&2
