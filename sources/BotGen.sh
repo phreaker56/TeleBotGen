@@ -71,16 +71,6 @@ reply () {
 	[[ "${callback_query_data}" = /del || "${message_text}" = /del ]] && listID_src
 }
 
-reply2 () {
-	[[ ! -z ${callback_query_message_chat_id[$id]} ]] && var=${callback_query_message_chat_id[$id]} || var=${message_from_id[$id]}
-
-		 	 ShellBot.sendMessage	--chat_id  $var \
-									--text "${callback_query_data}" \
-									--parse_mode html \
-									--reply_markup "$(ShellBot.ForceReply)"
-	[[ "${callback_query_data}" = /del ]] && listID_src
-}
-
 menu_print () {
 [[ ! -z ${callback_query_message_chat_id[$id]} ]] && var=${callback_query_message_chat_id[$id]} || var=${message_chat_id[$id]}
 
@@ -164,16 +154,16 @@ botao_conf=''
 botao_user=''
 botao_donar=''
 
-ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/add' --callback_data '/add'
-ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/del' --callback_data '/del'
-ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/list' --callback_data '/list'
-ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/ID' --callback_data '/ID'
+ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text 'add' --callback_data '/add'
+ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text 'del' --callback_data '/del'
+ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text 'list' --callback_data '/list'
+ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text 'ID' --callback_data '/ID'
 
-ShellBot.InlineKeyboardButton --button 'botao_conf' --line 2 --text '/power' --callback_data '/power'
-ShellBot.InlineKeyboardButton --button 'botao_conf' --line 2 --text '/menu' --callback_data '/menu'
+ShellBot.InlineKeyboardButton --button 'botao_conf' --line 2 --text 'power' --callback_data '/power'
+ShellBot.InlineKeyboardButton --button 'botao_conf' --line 2 --text 'menu' --callback_data '/menu'
 
-ShellBot.InlineKeyboardButton --button 'botao_conf' --line 3 --text '/keygen' --callback_data '/keygen'
-ShellBot.InlineKeyboardButton --button 'botao_user' --line 1 --text '/keygen' --callback_data '/keygen'
+ShellBot.InlineKeyboardButton --button 'botao_conf' --line 3 --text 'keygen' --callback_data '/keygen'
+ShellBot.InlineKeyboardButton --button 'botao_user' --line 1 --text 'keygen' --callback_data '/keygen'
 
 ShellBot.InlineKeyboardButton --button 'botao_donar' --line 1 --text 'Donar Paypal' --callback_data '1' --url 'https://www.paypal.me/Rufu99'
 ShellBot.InlineKeyboardButton --button 'botao_donar' --line 2 --text 'Donar MercadoPago ARG' --callback_data '1' --url 'http://mpago.li/1SAHrwu'
