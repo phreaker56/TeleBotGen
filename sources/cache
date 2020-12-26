@@ -6,27 +6,33 @@ cache_src () {
 unset ram1
 unset ram2
 unset ram3
+unset _usor
+_usor=$(printf '%-8s' "$(free -m | awk 'NR==2{printf "%.2f%%", $3*100/$2 }')")
 ram1=$(free -h | grep -i mem | awk {'print $2'})
 ram2=$(free -h | grep -i mem | awk {'print $4'})
 ram3=$(free -h | grep -i mem | awk {'print $3'})
-	  bot_retorno="====Antes====\n"
-	  bot_retorno+="Ram: $ram1\n"
-	  bot_retorno+="USADA: $ram3\n"
-	  bot_retorno+="LIBRE: $ram2\n"
-	  bot_retorno+="USO DE RAM: $_usor\n"
-	  bot_retorno+="=============\n"
+	  bot_retorno="=========Antes=========\n"
+	  bot_retorno+="Ram: $ram1 || EN Uso: $_usor\n"
+	  bot_retorno+="USADA: $ram3 || LIBRE: $ram2\n"
+	  bot_retorno+="=======================\n"
 msj_fun
-echo 2 > /proc/sys/vm/drop_caches
+
+sleep 2
+
+sudo sync
+sudo sysctl -w vm.drop_caches=3 > /dev/null 2>&1
+
 unset ram1
 unset ram2
 unset ram3
-	  bot_retorno="====Despues====\n"
-	  bot_retorno+="Ram: $ram1\n"
-	  bot_retorno+="USADA: $ram3\n"
-	  bot_retorno+="LIBRE: $ram2\n"
-	  bot_retorno+="USO DE RAM: $_usor\n"
-	  bot_retorno+="$LINE\n"
-	  bot_retorno+="limpiado del cache con exito!\n"
-	  bot_retorno+="$LINE\n"
+unset _usor
+_usor=$(printf '%-8s' "$(free -m | awk 'NR==2{printf "%.2f%%", $3*100/$2 }')")
+ram1=$(free -h | grep -i mem | awk {'print $2'})
+ram2=$(free -h | grep -i mem | awk {'print $4'})
+ram3=$(free -h | grep -i mem | awk {'print $3'})
+	  bot_retorno="=========Ahora=========\n"
+	  bot_retorno+="Ram: $ram1 || EN Uso: $_usor\n"
+	  bot_retorno+="USADA: $ram3 || LIBRE: $ram2\n"
+	  bot_retorno+="=======================\n"
 msj_fun
 }
