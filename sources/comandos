@@ -21,6 +21,8 @@ comand () {
 				 /*|*)invalido_fun &;;
 			 esac
 			fi
+			sleep 5 
+			[[ -e "/etc/donar_active.txt" ]] && donar
 		 fi
 	    else
 
@@ -49,6 +51,7 @@ comand () {
 			 		 /[Ii]nstal)link_src &;;
 			 		 /[Cc]ache)cache_src &;;
 					 /[Uu]pdate|/[Aa]ctualizar)update &;;
+					 /[Dd]onar|[Dd]onar)donar_OnOff &;;
 			 		 /*|*)invalido_fun &;;
 				esac
 

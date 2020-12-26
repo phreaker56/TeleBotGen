@@ -52,6 +52,7 @@ source ${SRC}/gerar_key
 source ${SRC}/power
 source ${SRC}/comandos
 source ${SRC}/update
+source ${SRC}/donar
 
 # Token del bot
 bot_token="$(cat ${CIDdir}/token)"
@@ -149,9 +150,19 @@ msj_fun () {
 	return 0
 }
 
+msj_donar () {
+	[[ ! -z ${callback_query_message_chat_id[$id]} ]] && var=${callback_query_message_chat_id[$id]} || var=${message_chat_id[$id]}
+	      ShellBot.sendMessage --chat_id $var \
+							--text "<i>$(echo -e "$bot_retorno")</i>" \
+							--parse_mode html \
+							--reply_markup "$(ShellBot.InlineKeyboardMarkup -b 'botao_donar')"
+	return 0
+}
+
 
 botao_conf=''
 botao_user=''
+botao_donar=''
 
 ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/add' --callback_data '/add'
 ShellBot.InlineKeyboardButton --button 'botao_conf' --line 1 --text '/del' --callback_data '/del'
@@ -163,6 +174,10 @@ ShellBot.InlineKeyboardButton --button 'botao_conf' --line 2 --text '/menu' --ca
 
 ShellBot.InlineKeyboardButton --button 'botao_conf' --line 3 --text '/keygen' --callback_data '/keygen'
 ShellBot.InlineKeyboardButton --button 'botao_user' --line 1 --text '/keygen' --callback_data '/keygen'
+
+ShellBot.InlineKeyboardButton --button 'botao_donar' --line 1 --text 'Donar Paypal' --callback_data '1' --url 'https://www.paypal.me/Rufu99'
+ShellBot.InlineKeyboardButton --button 'botao_donar' --line 2 --text 'Donar MercadoPago ARG' --callback_data '1' --url 'http://mpago.li/1SAHrwu'
+ShellBot.InlineKeyboardButton --button 'botao_donar' --line 3 --text 'Acortador adf.ly' --callback_data '1' --url 'http://caneddir.com/2J9J'
 
 # Ejecutando escucha del bot
 while true; do
