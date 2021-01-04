@@ -151,6 +151,39 @@ instaled=/etc/ADM-db/sources && [[ ! -d ${instaled} ]] && download
 bot_gen
 }
 
+msj_prueba () {
+
+TOKEN="$(cat /etc/ADM-db/token)"
+ID="$(cat /etc/ADM-db/Admin-ID)"
+
+[[ -z $TOKEN ]] && {
+	clear
+	echo -e "$bar"
+	echo -e "\033[1;37m Aun no a ingresado el token\n No se puede enviar ningun mensaje!"
+	echo -e "$bar"
+	read foo
+} || {
+	[[ -z $ID ]] && {
+		clear
+		echo -e "$bar"
+		echo -e "\033[1;37m Aun no a ingresado el ID\n No se puede enviar ningun mensaje!"
+		echo -e "$bar"
+		read foo
+	} || {
+		MENSAJE="Esto es un mesaje de prueba!"
+		URL="https://api.telegram.org/bot$TOKEN/sendMessage"
+		curl -s -X POST $URL -d chat_id=$ID -d text="$MENSAJE" &>/dev/null
+		clear
+		echo -e "$bar"
+		echo -e "\033[1;37m mensaje enviado...!"
+		echo -e "$bar"
+		sleep 2
+	}
+}
+
+bot_gen
+}
+
 bot_gen () {
 clear
 unset PID_GEN
@@ -164,7 +197,8 @@ echo -e "$bar"
 echo -e "\033[1;32m[1] \033[1;36m> \033[1;37mTOKEN DEL BOT"
 echo -e "\033[1;32m[2] \033[1;36m> \033[1;37mINICIAR/PARAR BOT $PID_GEN\033[0m"
 echo -e "\033[1;32m[3] \033[1;36m> \033[1;37mID DE USUARIO TELEGRAM"
-echo -e "\033[1;32m[4] \033[1;36m> \033[1;37mMANUAL"
+echo -e "\033[1;32m[4] \033[1;36m> \033[1;37mMENSAJE DE PRUEBA"
+echo -e "\033[1;32m[5] \033[1;36m> \033[1;37mMANUAL"
 echo -e "$bar"
 echo -e "\e[1;32m[0] \e[36m>\e[0m \e[47m\e[30m <<ATRAS "
 echo -e "$bar"
@@ -175,7 +209,8 @@ case $opcion in
 1) ini_token;;
 2) start_bot;;
 3) ini_id;;
-4) ayuda_fun;;
+4) msj_prueba;;
+5) ayuda_fun;;
 *) bot_gen;;
 esac
 }
