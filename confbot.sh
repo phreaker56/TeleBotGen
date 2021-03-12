@@ -143,8 +143,10 @@ bot_gen
 }
 
 bot_conf () {
-check_ip
-function_verify
+#check_ip
+#function_verify
+v1=$(curl -sSL "https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/Vercion")
+echo "$v1" > /etc/ADM-db/vercion
 instaled=/etc/ADM-db/sources && [[ ! -d ${instaled} ]] && download
 bot_gen
 }
