@@ -2,28 +2,28 @@
 SCPresq="aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3J1ZGk5OTk5L1RlbGVCb3RHZW4vbWFzdGVyL3NvdXJjZXM="
 SUB_DOM='base64 -d'
 bar="\e[0;36m=====================================================\e[0m"
-check_ip () {
-MIP=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -o -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
-MIP2=$(wget -qO- ipv4.icanhazip.com)
-[[ "$MIP" != "$MIP2" ]] && IP="$MIP2" || IP="$MIP"
-echo "$IP" > /usr/bin/vendor_code
-}
-function_verify () {
-  permited=$(curl -sSL "https://www.dropbox.com/s/8918s8z3py6jq7r/Control-IP")
-  [[ $(echo $permited|grep "${IP}") = "" ]] && {
-  clear
-  echo -e "\n\n\n\e[31m====================================================="
-  echo -e "\e[31m      ¡LA IP $(wget -qO- ipv4.icanhazip.com) NO ESTA AUTORIZADA!\n     SI DESEAS USAR EL BOTGEN CONTACTE A @Rufu99"
-  echo -e "\e[31m=====================================================\n\n\n\e[0m"
-  [[ -d /etc/ADM-db ]] && rm -rf /etc/ADM-db
-[[ ! -e "/bin/ShellBot.sh" ]] && rm /bin/ShellBot.sh
-  exit 1
-  } || {
-  ### INTALAR VERCION DE SCRIPT
-  v1=$(curl -sSL "https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/Vercion")
-  echo "$v1" > /etc/ADM-db/vercion
-  }
-}
+#check_ip () {
+#MIP=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -o -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
+#MIP2=$(wget -qO- ipv4.icanhazip.com)
+#[[ "$MIP" != "$MIP2" ]] && IP="$MIP2" || IP="$MIP"
+#echo "$IP" > /usr/bin/vendor_code
+#}
+#function_verify () {
+#  permited=$(curl -sSL "https://www.dropbox.com/s/8918s8z3py6jq7r/Control-IP")
+#  [[ $(echo $permited|grep "${IP}") = "" ]] && {
+#  clear
+#  echo -e "\n\n\n\e[31m====================================================="
+#  echo -e "\e[31m      ¡LA IP $(wget -qO- ipv4.icanhazip.com) NO ESTA AUTORIZADA!\n     SI DESEAS USAR EL BOTGEN CONTACTE A @Rufu99"
+#  echo -e "\e[31m=====================================================\n\n\n\e[0m"
+#  [[ -d /etc/ADM-db ]] && rm -rf /etc/ADM-db
+#[[ ! -e "/bin/ShellBot.sh" ]] && rm /bin/ShellBot.sh
+#  exit 1
+#  } || {
+#  ### INTALAR VERCION DE SCRIPT
+#  v1=$(curl -sSL "https://raw.githubusercontent.com/rudi9999/TeleBotGen/master/Vercion")
+#  echo "$v1" > /etc/ADM-db/vercion
+#  }
+#}
 
 veryfy_fun () {
 SRC="/etc/ADM-db/sources" && [[ ! -d ${SRC} ]] && mkdir ${SRC}
