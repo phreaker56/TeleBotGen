@@ -1,5 +1,4 @@
 #!/bin/bash
-
 SCPresq="aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3J1ZGk5OTk5L1RlbGVCb3RHZW4vbWFzdGVyL3NvdXJjZXM="
 SUB_DOM='base64 -d'
 bar="\e[0;36m=====================================================\e[0m"
@@ -145,8 +144,8 @@ bot_gen
 }
 
 bot_conf () {
-check_ip
-function_verify
+# check_ip
+# function_verify
 instaled=/etc/ADM-db/sources && [[ ! -d ${instaled} ]] && download
 bot_gen
 }
