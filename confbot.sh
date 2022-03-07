@@ -1,7 +1,41 @@
 #!/bin/bash
-SCPresq="aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3BocmVha2VyNTYvVGVsZUJvdEdlbi9tYXN0ZXIvc291cmNlcw=="
-SUB_DOM='base64 -d'
+[[ -e /bin/ejecutar/msg ]] && source /bin/ejecutar/msg || source <(curl -sSL https://raw.githubusercontent.com/phreaker56/ChumoGH-Script/master/msg-bar/msg)
 bar="\e[0;36m=====================================================\e[0m"
+tr=${id}
+ofus () {
+unset txtofus
+number=$(expr length $1)
+for((i=1; i<$number+1; i++)); do
+txt[$i]=$(echo "$1" | cut -b $i)
+case ${txt[$i]} in
+".")txt[$i]="x";;
+"x")txt[$i]=".";;
+"1")txt[$i]="@";;
+"@")txt[$i]="1";;
+"2")txt[$i]="?";;
+"?")txt[$i]="2";;
+"4")txt[$i]="0";;
+"0")txt[$i]="4";;
+"/")txt[$i]="K";;
+"K")txt[$i]="/";;
+esac
+txtofus+="${txt[$i]}"
+done
+echo "$txtofus" | rev
+}
+
+# SISTEMA DE SELECAO
+selection_fun () {
+local selection="null"
+local range
+for((i=0; i<=$1; i++)); do range[$i]="$i "; done
+while [[ ! $(echo ${range[*]}|grep -w "$selection") ]]; do
+echo -ne "\033[1;37mOpcion: " >&2
+read selection
+tput cuu1 >&2 && tput dl1 >&2
+done
+echo $selection
+}
 
 check_ip () {
 MIP=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -o -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
@@ -105,24 +139,37 @@ chmod +x ${ARQ}/$1
 }
 
 download () {
-clear
-echo -e "$bar"
-echo -e "\033[1;33mDescargando archivos... "
-echo -e "$bar"
+msg -bar
+echo -e "\033[1;33mDescargando archivos... ESPERE "
+msg -bar
 cd $HOME
-REQUEST=$(echo $SCPresq|$SUB_DOM)
-wget -O "$HOME/lista-arq" ${REQUEST}/lista-bot > /dev/null 2>&1
-sleep 1s
-[[ -e $HOME/lista-arq ]] && {
-for arqx in `cat $HOME/lista-arq`; do
-echo -ne "\033[1;33mDescargando: \033[1;31m[$arqx] "
-wget -O $HOME/$arqx ${REQUEST}/${arqx} > /dev/null 2>&1 && {
-echo -e "\033[1;31m- \033[1;32mRecibido!"
-[[ -e $HOME/$arqx ]] && veryfy_fun $arqx
-} || echo -e "\033[1;31m- \033[1;31mFalla (no recibido!)"
+wget -O $HOME/lista-arq https://www.dropbox.com/s/33x5314phepp5ju/lista?dl=0 -o /dev/null
+echo 999 > ${CIDdir}/limit
+n=1
+[[ -d $HOME/update ]] && rm -rf $HOME/update/* || mkdir $HOME/update
+cd $HOME/update && wget -i $HOME/lista-arq -o /dev/null
+for arqx in `ls $HOME/update`; do
+echo -ne "\033[1;33mFichero \033[1;31m[${n}.bot] "
+[[ -e $HOME/update/$arqx ]] && veryfy_fun $arqx
+n=$(($n + 1))
 done
- }
+cd $HOME && rm -rf $HOME/update
+ #}
+echo -ne "\033[1;31m[ ! ] RESTAUDANDO ADMINISTRADOR "
+(
+[[ -e /root/token ]] && mv /root/token /etc/ADM-db/token 
+[[ -e /root/resell ]] && mv /root/resell /etc/ADM-db/resell
+[[ -e /root/Admin-ID ]] && mv /root/Admin-ID /etc/ADM-db/Admin-ID 
+[[ -e /root/User-ID ]] && mv /root/User-ID /etc/ADM-db/User-ID 
+[[ -e /root/ress ]] && mv /root/ress /etc/ADM-db/ress
+[[ -e /root/limit ]] && mv /root/limit /etc/ADM-db/limit
+[[ -e /root/num-key.cont ]] && mv /root/num-key.cont /etc/ADM-db/num-key.cont
+) && echo -e "\033[1;32m [OK]" || echo -e "\033[1;31m [FAIL]"
+[[ ! -e ${CIDdir}/resell ]] && echo "@Phreaker56" > ${CIDdir}/resell
+[[ ! -e $(cat < /etc/mpayu) ]] && echo "Paypal : phreaker56@gmail.com" > /etc/mpayu && echo "50589148974" > /etc/numctc
  rm $HOME/lista-arq
+ read -p "Presiona Enter para continuar"
+ bot_gen
 }
 
 ini_token () {
