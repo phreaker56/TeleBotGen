@@ -21,9 +21,76 @@ function_verify () {
 #  exit 1
 #  } || {
   ### INTALAR VERCION DE SCRIPT
-  v1=$(curl -sSL "https://raw.githubusercontent.com/phreaker56/TeleBotGen/master/Vercion")
-  echo "$v1" > /etc/ADM-db/vercion
-#  }
+  clear
+  echo -e "\n\n\n\e[32m====================================================="
+  echo -e "\e[32m      ¡LA IP $(wget -qO- ipv4.icanhazip.com) ESTA AUTORIZADA!"
+  echo -e "      Mediante  $link Autorida por @ChumoGH"
+  echo -e "      SI DESEAS USAR EL BOTGEN CONTACTE A @ChumoGH"
+  echo -e "\e[32m=====================================================\n\n\n\e[0m"
+  CIDdir=/etc/ADM-db && [[ ! -d ${CIDdir} ]] && mkdir ${CIDdir}
+  [[ ! -z $keybot ]] && echo $(ofus $keybot) > /bin/downloadbot && chmod +x /bin/downloadbot
+  [[ -e /etc/nivbot ]] && { 
+  lv=$(cat < /etc/nivbot)
+  lv=$(($lv + 1))
+  } || echo "1" > /etc/nivbot
+  v1=$(curl -sSL "https://www.dropbox.com/s/8tizr516cvkwss6/v-new.log")
+  echo "$v1" > /etc/ADM-db/vercion  
+  }
+}
+
+
+change_pay () {
+unset option
+clear
+echo -e "$bar"
+echo -e "  MENSAJE ACTUAL $(cat < /etc/mpayu)"
+echo -e "$bar"
+echo -e "  \033[1;37mINGRESA TU METODO DE PAGO Y/O CORREO"
+echo -e "$bar\n"
+echo -e "Ingresa en este Orden o Secuencia \n PAYPAL : chumogh@gmail.com \n"
+echo -e "$bar"
+read -p "TEXTO: " opcion
+[[ -z $opcion ]] && bot_gen && exit || echo "$opcion" > /etc/mpayu && echo "TOKEN APLICADO EXITOSAMENTE"
+read -p " Enter para Continuar"
+echo -e "$bar"
+echo -e "  \033[1;37m NUMERO DE CONTACTO ACTUAL $(cat < /etc/numctc) "
+echo -e "$bar\n"
+echo -e " Ingresa en este Orden o FORMATO \n   593987072611  \n"
+echo -e "$bar"
+read -p "TEXTO: " opcion1
+echo -e "$bar\n"
+echo -e " AGREGA UN MENSAJE DE LLEGADA / OPCIONAL \n   Hola!, $(cat < ${CIDdir}/resell) Me interesa Conocer más sobre el ADM  \n"
+echo -e "$bar"
+read -p "TEXTO: " nmsg
+[[ -z $nmsg ]] && echo "text=Hola!, $(cat < ${CIDdir}/resell) Me interesa Conocer más sobre el ADM." > /etc/numsg || echo "text=$nmsg" > /etc/numsg
+[[ -z $opcion ]] && bot_gen && exit || echo $opcion1 > /etc/numctc && echo "TOKEN APLICADO EXITOSAMENTE"
+read -p " Enter para Continuar"
+bot_gen
+}
+
+lim-bot () {
+unset option
+clear
+echo -e "$bar"
+echo -e "  \033[1;37mIngrese el Limite del Bot"
+echo -e "$bar"
+echo -n "Limite: "
+read opcion
+echo "$opcion" > ${CIDdir}/limit
+echo "$opcion" > /etc/limit
+#echo "sed -i "s/1001282138571/0/g" /etc/gerar-sh-log
+echo '#!/bin/bash -e
+sleep 24h' > ${CIDdir}/sumlimit
+echo 'newq=$(cat < /etc/ADM-db/limit)
+opcion=$(cat < /etc/limit)
+newsum=$(($newq + $opcion))
+echo "$newsum" > /etc/ADM-db/limit
+screen -dmS sumlimit bash /etc/ADM-db/sumlimit&
+exit' >> ${CIDdir}/sumlimit
+echo -e "$bar"
+read -p "Presione Enter para continuar "
+screen -dmS sumlimit bash /etc/ADM-db/sumlimit&
+bot_gen
 }
 
 veryfy_fun () {
