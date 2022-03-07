@@ -72,6 +72,20 @@ read foo
 bot_gen
 }
 
+ini_res () {
+clear
+echo -e "$bar"
+echo -e "  \033[1;37mIngrese el Contacto de ADMIN de su bot"
+echo -e "$bar"
+echo -n "RESELLER: "
+read opction
+echo "$opction" > ${CIDdir}/resell
+echo -e "$bar"
+read -p "Presione Enter para continuar "
+bot_gen
+}
+
+
 ini_id () {
 clear
 echo -e "$bar"
@@ -91,31 +105,34 @@ start_bot () {
 unset PIDGEN
 PIDGEN=$(ps aux|grep -v grep|grep "BotGen.sh")
 if [[ ! $PIDGEN ]]; then
-screen -dmS teleBotGen ${CIDdir}/BotGen.sh
-clear
-echo -e "$bar"
-echo -e "\033[1;32m                BotGen en linea"
-echo -e "$bar"
-echo -ne "\033[1;97m Poner en linea despues de un reinicio [s/n]: "
-read bot_ini
-echo -e "$bar"
-[[ $bot_ini = @(s|S|y|Y) ]] && {
-	crontab -l > /root/cron
-	echo "@reboot screen -dmS teleBotGen ${CIDdir}/BotGen.sh" >> /root/cron
-	crontab /root/cron
-	rm /root/cron
-}
+echo -e "[Unit]
+Description=BotGen Service by @phreaker56
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root
+ExecStart=/bin/bash ${CIDdir}/BotGen.sh -start
+Restart=always
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target" > /etc/systemd/system/BotGen-server.service
+
+		systemctl enable BotGen-server &>/dev/null
+    	systemctl start BotGen-server &>/dev/null
 else
-killall BotGen.sh
-crontab -l > /root/cron
-sed -i '/BotGen.sh/ d' /root/cron
-crontab /root/cron
-rm /root/cron
+killall BotGen.sh &>/dev/null
+systemctl stop BotGen-server &>/dev/null
+systemctl disable BotGen-server &>/dev/null
+rm /etc/systemd/system/BotGen-server.service &>/dev/null
 clear
 msg -bar
 echo -e "\033[1;31m            BotGen fuera de linea"
 msg -bar
-sleep 3
+read -p "Presione Enter para continuar "
 fi
 bot_gen
 }
@@ -143,10 +160,11 @@ bot_gen
 }
 
 bot_conf () {
+[[ -e /etc/ADM-db/token ]] && mv /etc/ADM-db/token /root/token
+[[ -e /etc/ADM-db/Admin-ID ]] && mv /etc/ADM-db/Admin-ID /root/Admin-ID
 check_ip
 function_verify
 instaled=/etc/ADM-db/sources && [[ ! -d ${instaled} ]] && download
-bot_gen
 }
 
 msj_prueba () {
@@ -182,33 +200,130 @@ ID="$(cat /etc/ADM-db/Admin-ID)"
 bot_gen
 }
 
+msj_ind () {
+
+TOKEN="$(cat /etc/ADM-db/token)"
+echo -e "$bar"
+echo -e "  \033[1;37mIngrese su ID de telegram a Mensajear"
+echo -e "$bar"
+read -p "ID: " ID 
+[[ -z $ID ]] && ID="$(cat /etc/ADM-db/Admin-ID)"
+[[ -z $TOKEN ]] && {
+	clear
+	echo -e "$bar"
+	echo -e "\033[1;37m Aun no a ingresado el token\n No se puede enviar ningun mensaje!"
+	echo -e "$bar"
+	read foo
+} || {
+	[[ -z $ID ]] && {
+		clear
+		echo -e "$bar"
+		echo -e "\033[1;37m Aun no a ingresado el ID\n No se puede enviar ningun mensaje!"
+		echo -e "$bar"
+		read foo
+	} || {
+		MENSAJE="Hola, Mensale de Prueba del BotGen Generador!"
+echo -e "$bar"
+echo -e "  \033[1;37mINGRESA EL MENSAJE A ENVIAR"
+echo -e "$bar"
+read -p "TEXTO: " MENSAJE 
+echo -e "$bar"
+echo -e "  \033[1;37mPEGA RUTA DE IMAGEN"
+echo -e "$bar"
+read -p "IMG: " img 
+#[[ -z $img ]] && img="https://raw.githubusercontent.com/ChumoGH/ChumoGH-Script/master/favi.png"
+[[ -z $img ]] && img="/var/www/html/bot_vmess_qr.png"
+[[ -z $MENSAJE ]] && MENSAJE="Hola, Mensaje de Prueba del BotGen Generador!"
+		URL="https://api.telegram.org/bot$TOKEN/sendMessage"
+		URG="https://api.telegram.org/bot$TOKEN/sendPhoto"
+		curl -s -X POST $URG -F chat_id=$ID -F photo="@$img" #-F caption="<code>New Script @ChumoGH</code>" #-F width="100" -F height="100"
+		curl -s -X POST $URL -d chat_id=$ID -d text="$MENSAJE" &>/dev/null
+#		clear
+		echo -e "@$img"
+		echo -e "$bar"
+		echo -e "\033[1;37m Mensaje enviado Exitosamente...!"
+		echo -e "$bar"
+		read -p "ENTER PARA Continuar"
+	}
+}
+
+bot_gen
+}
+
+
+
+act-bot () {
+echo "Respaldando TOKEN y ADMINISTRADOR" 
+[[ -e /etc/ADM-db/token ]] && mv /etc/ADM-db/token /root/token
+[[ -e /etc/ADM-db/Admin-ID ]] && mv /etc/ADM-db/Admin-ID /root/Admin-ID
+[[ -e /etc/ADM-db/User-ID ]] && mv /etc/ADM-db/User-ID /root/User-ID
+[[ -e /etc/ADM-db/ress ]] && mv /etc/ADM-db/ress /root/ress
+[[ $(cat < /etc/ADM-db/resell) != "@Phreakr56" ]] && mv /etc/ADM-db/resell /root/resell
+rm -rf /etc/ADM-db/sources/gerar_key && download
+}
+
+respon () {
+[[ ! -e /etc/menu_ito ]] && credd=$(cat < /etc/SCRIPT/menu_credito) || credd=$(cat /etc/menu_ito ) 
+[[ -e ${CIDdir}/ress ]] && {
+echo -e "DESACTIVANDO RESELLER $credd FIJO EN BotGEN"
+echo -e "   AHORA SE FIJARA EL NOMBRE DE QUIEN GENERE LA KEY"
+read -p "ENTER PARA VOLVER"
+rm -f ${CIDdir}/ress 
+} || { 
+echo -e "ACTIVANDO RESELLER $credd FIJO EN BotGEN"
+echo -e "AHORA SE FIJARA $credd EN TODAS LAS KEYS "
+read -p "ENTER PARA VOLVER"
+touch ${CIDdir}/ress
+}
+bot_gen
+}
+
+
 bot_gen () {
 clear
 unset PID_GEN
-PID_GEN=$(ps x|grep -v grep|grep "BotGen.sh")
-[[ ! $PID_GEN ]] && PID_GEN="\033[1;31moffline" || PID_GEN="\033[1;32monline"
-
 CIDdir=/etc/ADM-db && [[ ! -d ${CIDdir} ]] && mkdir ${CIDdir}
-echo -e "$bar"
-echo -e "     \e[47m \e[30m>>>>>>  BotGen by \e[1;36mRufu99 edit: Phreaker56\e[1;32m  $(cat ${CIDdir}/vercion)\e[0m\e[47m \e[30m<<<<<< \e[0m"
-echo -e "$bar"
-echo -e "\033[1;32m[1] \033[1;36m> \033[1;37mTOKEN DEL BOT"
-echo -e "\033[1;32m[2] \033[1;36m> \033[1;37mINICIAR/PARAR BOT $PID_GEN\033[0m"
-echo -e "\033[1;32m[3] \033[1;36m> \033[1;37mID DE USUARIO TELEGRAM"
-echo -e "\033[1;32m[4] \033[1;36m> \033[1;37mMENSAJE DE PRUEBA"
-echo -e "\033[1;32m[5] \033[1;36m> \033[1;37mMANUAL"
-echo -e "$bar"
-echo -e "\e[1;32m[0] \e[36m>\e[0m \e[47m\e[30m <<ATRAS "
-echo -e "$bar"
-echo -n "Opcion: "
-read opcion
-case $opcion in
-0) ;;
+PID_GEN=$(ps x|grep -v grep|grep "BotGen.sh")
+PID_on=$(ps x|grep -v grep|grep "modelid")
+[[ ! $PID_on ]] && PID_on="\033[1;31mOFF" || PID_on="\033[1;32mON"
+[[ ! $PID_GEN ]] && PID_GEN="\033[1;31mOFF" || PID_GEN="\033[1;32mON"
+[[ -e ${CIDdir}/token ]] && tk="\033[1;32mOK" || tk="\033[1;31mNULL"
+[[ -e ${CIDdir}/Admin-ID ]] && adid="\033[1;32mOK" || adid="\033[1;31mNULL"
+[[ -e ${CIDdir}/ress ]] && rfij="\033[1;32mRESELLER FIJO (Bot Personal )" || rfij="\033[1;31mRESELLER ALEATORIO ( Bot Publico )"
+limcont=$(cat /etc/ADM-db/limit) 
+[[ "${limcont}" = "999" ]] && limted=" ∞ " || limted=$(cat /etc/ADM-db/limit)
+msg -bar
+echo -e "  \033[7;49;35m  ==>►► 🐲 BotGEN Phreaker56💥ADM $(cat ${CIDdir}/vercion) 🐲 ◄◄<===   \033[0m"
+#echo -e "     \e[47m \e[30m>>>>>>  BotGen by \e[1;36mPhreaker56\e[1;32m  $(cat ${CIDdir}/vercion)\e[0m\e[47m \e[30m<<<<<< \e[0m"
+msg -bar
+echo -e "\033[0;35m[\033[0;36m1\033[0;35m] \033[0;35m> \033[1;37m TOKEN DEL BOT $tk "
+echo -e "\033[0;35m[\033[0;36m2\033[0;35m] \033[0;35m> \033[1;37m INICIAR/PARAR BOT $PID_GEN\033[0m"
+echo -e "\033[0;35m[\033[0;36m3\033[0;35m] \033[0;35m> \033[1;37m ID DE USUARIO TELEGRAM  $adid"
+echo -e "\033[0;35m[\033[0;36m4\033[0;35m] \033[0;35m> \033[1;37m Cambiar Contacto -> $(cat < ${CIDdir}/resell)"
+echo -e "\033[0;35m[\033[0;36m5\033[0;35m] \033[0;35m> \033[1;37m MENSAJE DE PRUEBA"
+echo -e "\033[0;35m[\033[0;36m6\033[0;35m] \033[0;36m> \033[1;37m MANUAL De Uso"
+echo -e "\033[0;35m[\033[0;36m7\033[0;35m] \033[0;35m> \033[1;37m Limite de KEYS \033[1;32m ( $limted ) "
+echo -e "\033[0;35m[\033[0;36m8\033[0;35m] \033[0;35m> \033[1;37m Modificar TIPO DE PAGO"
+echo -e "\033[0;35m[\033[0;36m9\033[0;35m] \033[0;35m> \033[1;37m $rfij"
+echo -e "\033[1;32m[10] \033[1;36m> \033[1;37m MSG POR ID"
+msg -bar
+echo -e "\033[0;35m[\033[0;36m0\033[0;35m] \033[0;34m<\033[0;33m SALIR"
+msg -bar
+selection=$(selection_fun 10)
+case ${selection} in
+0) gerar && exit ;;
 1) ini_token;;
 2) start_bot;;
 3) ini_id;;
-4) msj_prueba;;
-5) ayuda_fun;;
+4) ini_res;;
+5) msj_prueba;;
+6) ayuda_fun;;
+#7) source <(curl -sSL https://www.dropbox.com/s/f5mlwun3hkpq6k8/bot-permited.sh) ;;
+#8) act-bot ;;
+7) lim-bot ;;
+8) change_pay;;
+9) respon;;
+10)msj_ind;;
 *) bot_gen;;
 esac
 }
