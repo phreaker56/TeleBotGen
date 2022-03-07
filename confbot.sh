@@ -70,8 +70,6 @@ function_verify () {
   v1=$(curl -sSL "https://www.dropbox.com/s/8tizr516cvkwss6/v-new.log")
   echo "$v1" > /etc/ADM-db/vercion  
   }
-}
-
 
 change_pay () {
 unset option
