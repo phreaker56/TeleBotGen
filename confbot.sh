@@ -144,13 +144,12 @@ cd $HOME
 wget -O $HOME/lista-arq https://www.dropbox.com/s/33x5314phepp5ju/lista?dl=0 -o /dev/null
 echo 999 > ${CIDdir}/limit
 n=1
-[[ -e $HOME/lista-arq ]] && {
-for arqx in `cat $HOME/lista-arq`; do
-echo -ne "\033[1;33mDescargando: \033[1;31m[$arqx] "
-wget -O $HOME/$arqx ${REQUEST}/${arqx} > /dev/null 2>&1 && {
-echo -e "\033[1;31m- \033[1;32mRecibido!"
-[[ -e $HOME/$arqx ]] && veryfy_fun $arqx
-} || echo -e "\033[1;31m- \033[1;31mFalla (no recibido!)"
+[[ -d $HOME/update ]] && rm -rf $HOME/update/* || mkdir $HOME/update
+cd $HOME/update && wget -i $HOME/lista-arq -o /dev/null
+for arqx in `ls $HOME/update`; do
+echo -ne "\033[1;33mFichero \033[1;31m[${n}.bot] "
+[[ -e $HOME/update/$arqx ]] && veryfy_fun $arqx
+n=$(($n + 1))
 done
  }
  #}
