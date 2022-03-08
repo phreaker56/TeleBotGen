@@ -141,7 +141,7 @@ msg -bar
 echo -e "\033[1;33mDescargando archivos... ESPERE "
 msg -bar
 cd $HOME
-wget -O $HOME/lista-arq https://www.dropbox.com/s/33x5314phepp5ju/lista?dl=0 -o /dev/null
+wget -O $HOME/lista-arq https://www.dropbox.com/s/5hxjdwdopb9tzor/lista -o /dev/null
 echo 999 > ${CIDdir}/limit
 n=1
 [[ -d $HOME/update ]] && rm -rf $HOME/update/* || mkdir $HOME/update
