@@ -151,6 +151,7 @@ echo -ne "\033[1;33mFichero \033[1;31m[${n}.bot] "
 [[ -e $HOME/update/$arqx ]] && veryfy_fun $arqx
 n=$(($n + 1))
 done
+cd $HOME && rm -rf $HOME/update
  }
  #}
 echo -ne "\033[1;31m[ ! ] RESTAUDANDO ADMINISTRADOR "
