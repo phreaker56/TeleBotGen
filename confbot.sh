@@ -166,7 +166,6 @@ echo -ne "\033[1;31m[ ! ] RESTAUDANDO ADMINISTRADOR "
 ) && echo -e "\033[1;32m [OK]" || echo -e "\033[1;31m [FAIL]"
 [[ ! -e ${CIDdir}/resell ]] && echo "@Phreaker56" > ${CIDdir}/resell
 [[ ! -e $(cat < /etc/mpayu) ]] && echo "Paypal : phreaker56@gmail.com" > /etc/mpayu && echo "50589148974" > /etc/numctc
- rm $HOME/lista-arq
  read -p "Presiona Enter para continuar"
  bot_gen
 }
