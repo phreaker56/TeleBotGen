@@ -156,16 +156,17 @@ cd $HOME && rm -rf $HOME/update
  #}
 echo -ne "\033[1;31m[ ! ] RESTAUDANDO ADMINISTRADOR "
 (
-[[ -e /root/token ]] && mv /root/token /etc/ADM-db/token 
-[[ -e /root/resell ]] && mv /root/resell /etc/ADM-db/resell
-[[ -e /root/Admin-ID ]] && mv /root/Admin-ID /etc/ADM-db/Admin-ID 
-[[ -e /root/User-ID ]] && mv /root/User-ID /etc/ADM-db/User-ID 
-[[ -e /root/ress ]] && mv /root/ress /etc/ADM-db/ress
-[[ -e /root/limit ]] && mv /root/limit /etc/ADM-db/limit
-[[ -e /root/num-key.cont ]] && mv /root/num-key.cont /etc/ADM-db/num-key.cont
+[[ -e $HOME/token ]] && mv $HOME/token /etc/ADM-db/token 
+[[ -e $HOME/resell ]] && mv $HOME/resell /etc/ADM-db/resell
+[[ -e $HOME/Admin-ID ]] && mv $HOME/Admin-ID /etc/ADM-db/Admin-ID 
+[[ -e $HOME/User-ID ]] && mv $HOME/User-ID /etc/ADM-db/User-ID 
+[[ -e $HOME/ress ]] && mv $HOME/ress /etc/ADM-db/ress
+[[ -e $HOME/limit ]] && mv $HOME/limit /etc/ADM-db/limit
+[[ -e $HOME/num-key.cont ]] && mv $HOME/num-key.cont /etc/ADM-db/num-key.cont
 ) && echo -e "\033[1;32m [OK]" || echo -e "\033[1;31m [FAIL]"
-[[ ! -e ${CIDdir}/resell ]] && echo "@Phreaker56" > ${CIDdir}/resell
+[[ ! -e ${CIDdir}/resell ]] && echo "@Phreakr56" > ${CIDdir}/resell
 [[ ! -e $(cat < /etc/mpayu) ]] && echo "Paypal : phreaker56@gmail.com" > /etc/mpayu && echo "50589148974" > /etc/numctc
+ rm $HOME/lista-arq
  read -p "Presiona Enter para continuar"
  bot_gen
 }
